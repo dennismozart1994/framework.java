@@ -4,12 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.itextpdf.text.DocumentException;
+
+import appModule.WebCommands;
 import utility.Constants;
 import utility.ExcelUtils;
-import utility.PDFCreator;
-import utility.Screenshot;
 
-public class LoginPage {
+public class LoginPage extends WebCommands{
 	// public static WebDriver driver;
 	private WebDriver driver;
 	
@@ -18,45 +19,75 @@ public class LoginPage {
 	private static WebElement senha;
 	private static WebElement login_btn;
 	
+	// Constructor
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
 	}
-	public void LogIn() throws Exception
-	{
+	
+	
+	// Access URL Function
+	private void accessURL() throws DocumentException {
 		driver.get(Constants.URL);		
-		Constants.logger.error("Abrindo URL...");
+		Log("Abrindo URL...");
 		// add evidence
 		try {
-			PDFCreator.addStep("Step 1 - Acessar URL");
-			PDFCreator.addScreenshot(Screenshot.TakeScreenshot(driver, "test"));
-			
-			// map elements
-			login = driver.findElement(By.name("login"));
-			senha = driver.findElement(By.name("password"));
-			login_btn = driver.findElement(By.tagName("button"));
+			addStep("Step 1 - Acessar URL");
+			TakeScreenshot();
 		} catch (Exception e1) {
-			PDFCreator.logFatal(e1.toString());
+			ExceptionThrown(e1.toString());
 		}
-
-		// Read test Result into Excel File after open it
+	}
+	
+	// Log In Function	
+	public void LogIn() throws Exception
+	{
+		accessURL();
+		// map elements
+		login = driver.findElement(By.name("login"));
+		senha = driver.findElement(By.name("password"));
+		login_btn = driver.findElement(By.tagName("button"));
+		
+		
+		
 		try {
 			// step 2
-			login.sendKeys(ExcelUtils.getCellData(Constants.USER_R, Constants.USER_C));
-			Constants.logger.error("Digitando usuário");
-			senha.sendKeys(ExcelUtils.getCellData(Constants.PASS_R, Constants.PASS_C));
-			Constants.logger.error("Digitando senha");
+			Log("Typing User");
+			InsertDataIntoField(
+				login,
+				ExcelUtils.getCellData
+				(	// Read test data from Excel File to use
+					Constants.FILE_PATH + Constants.FILE_NAME,
+					"Web",
+					Constants.USER_R,
+					Constants.USER_C
+				)
+			);
+			Log("Typing password");
+			InsertDataIntoField
+			(
+				senha,
+				ExcelUtils.getCellData
+				(	// Read test data from Excel File to use
+					Constants.FILE_PATH + Constants.FILE_NAME,
+					"Web",
+					Constants.PASS_R,
+					Constants.PASS_C
+				)
+			);
+			
 			// add evidence
-			PDFCreator.addStep("Step 2 - Digitar usuário e senha");
-			PDFCreator.addScreenshot(Screenshot.TakeScreenshot(driver, "test"));
+			addStep("Step 2 - Digitar usuário e senha");
+			TakeScreenshot();
 			
 			// step 3
-			login_btn.click();
-			Constants.logger.error("Efetuando Login");
+			Click(login_btn);
+			Log("Sign In");
+			
 			// add evidence
-			PDFCreator.addStep("Step 3 - Realizar Login");
-			PDFCreator.addScreenshot(Screenshot.TakeScreenshot(driver, "test"));
+			addStep("Step 3 - Realizar Login");
+			TakeScreenshot();
 		} catch (Exception e) {
-			PDFCreator.logFatal(e.toString());
+			ExceptionThrown(e.toString());
 		}
 		
 	}

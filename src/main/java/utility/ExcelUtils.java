@@ -30,10 +30,10 @@ public class ExcelUtils {
 	
 	//This method is to read the test data from the Excel cell, in this we are passing parameters as Row num and Col num
 
-    public static String getCellData(int RowNum, int ColNum) throws Exception
+    public static String getCellData(String File, String SheetName,int RowNum, int ColNum) throws Exception
     {
 		try{
-			setExcelFile(Constants.PATH + Constants.FILE, "Plan1");
+			setExcelFile(File, SheetName);
 			Cell = ExcelWSheet.getRow(RowNum).getCell(ColNum);
 			String CellData = Cell.getStringCellValue();
 			return CellData;
@@ -55,9 +55,9 @@ public class ExcelUtils {
 	}
 	
 	// Close excel file
-	public static void closeExcel() throws IOException
+	public static void closeExcel(String File) throws IOException
 	{
-		FileOutputStream fileOut = new FileOutputStream(Constants.PATH + Constants.FILE);
+		FileOutputStream fileOut = new FileOutputStream(File);
 		ExcelWBook.write(fileOut);
 		fileOut.flush();
 		fileOut.close();
