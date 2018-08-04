@@ -74,8 +74,8 @@ public class RestPOSTTestExample extends RestCommands{
 		//Step 2 - Send Request e receba o response do sistema
 		PDFCreator.addStep("Step 2 - Send Request e receba o response do sistema");
 		POSTCommand(
-				readConfig("EndPoint"),
-				readConfig("Path"), 
+				Constants.URL,
+				Constants.URL_PATH, 
 				HeaderTitle, 
 				HeaderValue, 
 				json);
