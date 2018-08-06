@@ -9,8 +9,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -30,19 +29,19 @@ import utility.Constants;
 import utility.ExcelUtils;
 import utility.Log;
 import utility.PDFCreator;
+import utility.TestRail;
 
 public class WebCommands extends Config{
 	
 	public static WebDriver driver = null;
 /************************************ START WEB TEST ******************************************/
-	@BeforeClass
 	// read config file
-	public static void start() throws Exception
+	public static void start(String SheetName) throws Exception
 	{
+		// Set wich browser the framework should use
 		switch(readConfig("Environment"))
 		{
 			case "CHROME":
-				// Set wich browser the framework should use
 				System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\drivers\\chromedriver.exe");
 				WebCommands.driver = new ChromeDriver();
 				WebCommands.driver.manage().window().maximize();
@@ -61,7 +60,7 @@ public class WebCommands extends Config{
 		WebCommands.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
 		// Open Excel File
-		ExcelUtils.setExcelFile(Constants.FILE_PATH + Constants.FILE_NAME, "Plan1");
+		ExcelUtils.setExcelFile(Constants.FILE_PATH + Constants.FILE_NAME, SheetName);
 		Log("Abrindo arquivo Excel");
 	}
 	
@@ -265,10 +264,59 @@ public class WebCommands extends Config{
 	}
 	
 /************************************ END WEB TEST *******************************************/
-	@AfterClass
-	public static void close() throws IOException
+	public static void closeExcel() throws IOException
 	{
 		ExcelUtils.closeExcel(Constants.FILE_PATH + Constants.FILE_NAME);
 		driver.quit();
+	}
+/**************************** ASSERTIONS COMMANDS *************************************/
+public static void ValidateString(String SheetName, Integer RowNum, String expected, String current, String comment) throws Exception
+	{
+		Integer Result;
+		addStep("Validate:");
+		String Comment;
+		try 
+		{
+			Assert.assertEquals(expected, current);
+			TakeScreenshot();
+			Result = Constants.TESTRAIL_PASSED;
+			Comment = comment;
+		}
+		catch(AssertionError e)
+		{
+			Result = Constants.TESTRAIL_FAILED;
+			Comment = "Executado via automação com erro: \n" + e.toString();
+			ExceptionThrown(e.toString());
+		}
+		
+		// send result to Testrail
+		TestRail.AddResult
+		(
+			Constants.REST_FILE_PATH + Constants.REST_FILE_NAME,
+			SheetName, 
+			RowNum, 
+			Result,
+			Comment
+		);
+	}
+	
+	// shouldTest
+	public static boolean ShouldTest(String FileName, String SheetName, Integer RowNum) throws Exception
+	{
+		// get id
+		String Testid = ExcelUtils.getCellData(FileName, SheetName, RowNum, Constants.TEST_ID);
+		Integer sub = Integer.parseInt(Testid.substring(1));
+		
+		// get status
+		Integer status = TestRail.GetTestResult(sub);
+		
+		if(status == Constants.TESTRAIL_PASSED)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }

@@ -1,59 +1,66 @@
 package testScenarios;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.itextpdf.text.DocumentException;
 
 import appModule.RestCommands;
 import utility.Constants;
 
 public class RestPOSTTestExample extends RestCommands{
 	
-	// Variable to create JSON
-	
+	// Variable to see if should Test
+	boolean shouldTest;
 	
 	@Before
-	public void buildHeaders() throws MalformedURLException, DocumentException, IOException
-	{
-		// Creating evidence
-		createEvidence(
-			RestPOSTTestExample.class.getName(),
-			"Post de API teste",
-			"Post efetuado com sucesso"
-		);
+	public void begin() throws Exception
+	{	
+		// Open Excel file using sheetName as a parameter
+		start("JSON");
+		shouldTest = ShouldTest(Constants.REST_FILE_PATH + Constants.REST_FILE_NAME, "JSON", 2);
+		
+		// check if should test
+		if(shouldTest)
+		{
+			// Creating evidence
+			createEvidence(
+				RestPOSTTestExample.class.getName(),
+				"Post de API teste",
+				"Post efetuado com sucesso"
+			);
+		}
 	}
 	
 	@Test
 	public void PostExample() throws Exception
 	{
-		//Step 1 - Send Request e receba o response do sistema
-		POSTCommand(Constants.URL, Constants.URL_PATH, true);
-		addStep("Step 1 - Send Request e receba o response do sistema");
-		addJSON(getResponse());
-		
-		// Step 2 - Validate the response Code
-		addStep("Step 2 - Validate the response Code");
-		try 
+		if(shouldTest)
 		{
-			Assert.assertEquals("201", getStatusCode().toString());
-			addJSON(getStatusCode().toString());
+			//Step 1 - Send Request e receba o response do sistema
+			POSTCommand(Constants.URL, Constants.URL_PATH, "JSON");
+			
+			// Step 2 - Validate the response Code
+			ValidateString
+			(
+				"JSON",
+				2,
+				"201",
+				getStatusCode().toString(),
+				"Executado com sucesso via automação"
+			);
 		}
-		catch(AssertionError e)
-		{
-			ExceptionThrown(e.toString());
-			Assert.assertEquals("201", getStatusCode().toString());
-		}
-		
 	}
 	
 	@After
-	public void end()
+	public void tearDown() throws IOException
 	{
-		FinishEvidence(TestWebExample.class.getName());
+		if(shouldTest)
+		{
+			// Close PDF Evidence File
+			FinishEvidence(TestWebExample.class.getName());
+		}
+		// Close Excel File
+		quitExcel();
 	}
 }

@@ -38,30 +38,32 @@ public class LoginPage extends WebCommands{
 		}
 	}
 	
-	// Log In Function	
-	public void LogIn() throws Exception
-	{
-		accessURL();
-		// map elements
-		login = driver.findElement(By.name("login"));
-		senha = driver.findElement(By.name("password"));
-		login_btn = driver.findElement(By.tagName("button"));
-		
-		
-		
+	private void sendLogin() throws Exception {
 		try {
-			// step 2
 			Log("Typing User");
-			InsertDataIntoField(
+			login = driver.findElement(By.name("login"));
+			InsertDataIntoField
+			(
 				login,
 				ExcelUtils.getCellData
 				(	// Read test data from Excel File to use
 					Constants.FILE_PATH + Constants.FILE_NAME,
 					"Web",
-					Constants.USER_R,
+					Constants.WEB_START_CONTENT_LINE,
 					Constants.USER_C
 				)
 			);
+		}
+		catch(Exception e)
+		{
+			ExceptionThrown(e.toString());
+		}
+	}
+	
+
+	private void typePassword() throws Exception {
+		try {
+			senha = driver.findElement(By.name("password"));
 			Log("Typing password");
 			InsertDataIntoField
 			(
@@ -70,16 +72,30 @@ public class LoginPage extends WebCommands{
 				(	// Read test data from Excel File to use
 					Constants.FILE_PATH + Constants.FILE_NAME,
 					"Web",
-					Constants.PASS_R,
+					Constants.WEB_START_CONTENT_LINE,
 					Constants.PASS_C
 				)
 			);
-			
-			// add evidence
-			addStep("Step 2 - Digitar usuário e senha");
-			TakeScreenshot();
-			
+		}
+		catch(Exception e)
+		{
+			ExceptionThrown(e.toString());
+		}
+	}
+	
+	// Log In Function	
+	public void LogIn() throws Exception
+	{
+		accessURL();
+		sendLogin();
+		typePassword();
+		// add evidence
+		addStep("Step 2 - Digitar usuário e senha");
+		TakeScreenshot();
+		
+		try {
 			// step 3
+			login_btn = driver.findElement(By.tagName("button"));
 			Click(login_btn);
 			Log("Sign In");
 			
@@ -90,5 +106,5 @@ public class LoginPage extends WebCommands{
 			ExceptionThrown(e.toString());
 		}
 		
-	}
+	}	
 }
