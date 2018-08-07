@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -30,12 +32,15 @@ public class PDFCreator {
 	
 	public static void createPDF(String ProjectName, String TestCaseName, String Objective, String Environment, String Sprint, String ExecutionDate, String Result) throws DocumentException, MalformedURLException, IOException
 	{
-		String filePath = System.getProperty("user.dir") + "\\evidences\\" + TestCaseName + ".pdf";
+		String date = new SimpleDateFormat("yyyy_MM_dd").format(new Date());
+		String time = new SimpleDateFormat("hh_MM_ss").format(new Date());
+		String filePath = System.getProperty("user.dir") + "\\evidences\\" + TestCaseName + "_date_" + date + "_time_" + time + ".pdf";
 		document = new Document();
 		writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
 		document.open();
 		document.add(PDFCreator.createTestHeader(ProjectName, TestCaseName, Objective, Environment, Sprint, ExecutionDate, Result));
-	}
+		Constants.logger.error("Arquivo de evidência: " + TestCaseName + "_date_" + date + "_time_" + time + ".pdf criado com sucesso!");	
+		}
 	
 	public static PdfPTable createTestHeader(String ProjectName, String TestCaseName, String Objective, String Environment, String Sprint, String ExecutionDate, String Result) throws MalformedURLException, IOException, DocumentException
 	{

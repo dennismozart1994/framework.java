@@ -18,7 +18,7 @@ public class RestPOSTTestExample extends RestCommands{
 	{	
 		// Open Excel file using sheetName as a parameter
 		start("JSON");
-		shouldTest = ShouldTest(Constants.REST_FILE_PATH + Constants.REST_FILE_NAME, "JSON", 2);
+		shouldTest = ShouldTest(Constants.FILE_PATH + Constants.FILE_NAME, Constants.REST_START_CONTENT_LINE);
 		
 		// check if should test
 		if(shouldTest)
@@ -27,6 +27,7 @@ public class RestPOSTTestExample extends RestCommands{
 			createEvidence(
 				RestPOSTTestExample.class.getName(),
 				"Post de API teste",
+				"API",
 				"Post efetuado com sucesso"
 			);
 		}
@@ -38,13 +39,12 @@ public class RestPOSTTestExample extends RestCommands{
 		if(shouldTest)
 		{
 			//Step 1 - Send Request e receba o response do sistema
-			POSTCommand(Constants.URL, Constants.URL_PATH, "JSON");
+			POSTCommand(Constants.API_URL, Constants.API_PATH);
 			
 			// Step 2 - Validate the response Code
 			ValidateString
 			(
-				"JSON",
-				2,
+				Constants.REST_START_CONTENT_LINE,
 				"201",
 				getStatusCode().toString(),
 				"Executado com sucesso via automação"

@@ -34,12 +34,14 @@ import utility.TestRail;
 public class WebCommands extends Config{
 	
 	public static WebDriver driver = null;
+	public static String SheetName;
+	
 /************************************ START WEB TEST ******************************************/
 	// read config file
 	public static void start(String SheetName) throws Exception
 	{
 		// Set wich browser the framework should use
-		switch(readConfig("Environment"))
+		switch(readConfig("Browser"))
 		{
 			case "CHROME":
 				System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\drivers\\chromedriver.exe");
@@ -62,6 +64,7 @@ public class WebCommands extends Config{
 		// Open Excel File
 		ExcelUtils.setExcelFile(Constants.FILE_PATH + Constants.FILE_NAME, SheetName);
 		Log("Abrindo arquivo Excel");
+		WebCommands.SheetName = SheetName;
 	}
 	
 /*********************************** WEB COMMANDS **********************************************/
@@ -130,16 +133,27 @@ public class WebCommands extends Config{
 			readConfig("Project"),
 			TestCaseName,
 			Objective,
-			readConfig("Environment"),
+			readConfig("Browser"),
 			readConfig("Sprint"),
 			Constants.PROJECT_ED, 
 			ExpectedResult
 		);
 	}
 	
-	public static void ExceptionThrown(String ErrorToLog) throws DocumentException
+	public static void ExceptionThrown(String ErrorToLog, Integer ExcelFileLine) throws Exception
 	{
 		PDFCreator.logFatal(ErrorToLog);
+		
+		TestRail.AddResult
+		(
+			Constants.FILE_PATH + Constants.FILE_NAME,
+			SheetName,
+			ExcelFileLine, 
+			Constants.TESTRAIL_FAILED,
+			ErrorToLog
+		);
+		
+		throw new Exception(ErrorToLog);
 	}
 	
 	// Add Step into Evidence
@@ -270,38 +284,69 @@ public class WebCommands extends Config{
 		driver.quit();
 	}
 /**************************** ASSERTIONS COMMANDS *************************************/
-public static void ValidateString(String SheetName, Integer RowNum, String expected, String current, String comment) throws Exception
+	public static void ValidateString(Integer RowNum, String expected, String current, String comment) throws Exception
 	{
-		Integer Result;
 		addStep("Validate:");
 		String Comment;
+		boolean shouldThrown = false;
+		
 		try 
 		{
 			Assert.assertEquals(expected, current);
-			TakeScreenshot();
-			Result = Constants.TESTRAIL_PASSED;
 			Comment = comment;
+			shouldThrown = false;
 		}
 		catch(AssertionError e)
 		{
-			Result = Constants.TESTRAIL_FAILED;
 			Comment = "Executado via automação com erro: \n" + e.toString();
-			ExceptionThrown(e.toString());
+			shouldThrown = true;
 		}
 		
 		// send result to Testrail
-		TestRail.AddResult
-		(
-			Constants.REST_FILE_PATH + Constants.REST_FILE_NAME,
-			SheetName, 
-			RowNum, 
-			Result,
-			Comment
-		);
+		if(shouldThrown)
+		{
+			ExceptionThrown(Comment, RowNum);
+		}
+		else
+		{
+			TestRail.AddResult
+			(
+				Constants.FILE_PATH + Constants.FILE_NAME,
+				SheetName, 
+				RowNum, 
+				Constants.TESTRAIL_PASSED,
+				Comment
+			);
+		}
 	}
 	
+	// check if element is displayed
+	public static void PresenceValidation(WebElement element, Integer RowNum, String comment) throws Exception
+	{
+		addStep("Validate:");
+		try {
+			Assert.assertTrue(element.isDisplayed());
+			Log(comment);
+			
+			// send result to Testrail
+			TestRail.AddResult
+			(
+				Constants.FILE_PATH + Constants.FILE_NAME,
+				SheetName, 
+				RowNum, 
+				Constants.TESTRAIL_PASSED,
+				comment
+			);
+			
+		}catch(Exception e) {
+			// add throw declaration into evidence
+			Log("Failed - " + e.toString());
+			ExceptionThrown("Failed - " + e.toString(), RowNum);
+		}
+	}
+/**************************** TESTRAIL COMMANDS *************************************/
 	// shouldTest
-	public static boolean ShouldTest(String FileName, String SheetName, Integer RowNum) throws Exception
+	public static boolean ShouldTest(String FileName, Integer RowNum) throws Exception
 	{
 		// get id
 		String Testid = ExcelUtils.getCellData(FileName, SheetName, RowNum, Constants.TEST_ID);

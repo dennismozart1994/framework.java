@@ -4,8 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.itextpdf.text.DocumentException;
-
 import appModule.WebCommands;
 import utility.Constants;
 import utility.ExcelUtils;
@@ -26,7 +24,7 @@ public class LoginPage extends WebCommands{
 	
 	
 	// Access URL Function
-	private void accessURL() throws DocumentException {
+	private void accessURL() throws Exception {
 		driver.get(Constants.URL);		
 		Log("Abrindo URL...");
 		// add evidence
@@ -34,7 +32,7 @@ public class LoginPage extends WebCommands{
 			addStep("Step 1 - Acessar URL");
 			TakeScreenshot();
 		} catch (Exception e1) {
-			ExceptionThrown(e1.toString());
+			ExceptionThrown(e1.toString(), Constants.WEB_START_CONTENT_LINE);
 		}
 	}
 	
@@ -56,7 +54,7 @@ public class LoginPage extends WebCommands{
 		}
 		catch(Exception e)
 		{
-			ExceptionThrown(e.toString());
+			ExceptionThrown(e.toString(), Constants.WEB_START_CONTENT_LINE);
 		}
 	}
 	
@@ -79,12 +77,12 @@ public class LoginPage extends WebCommands{
 		}
 		catch(Exception e)
 		{
-			ExceptionThrown(e.toString());
+			ExceptionThrown(e.toString(), Constants.WEB_START_CONTENT_LINE);
 		}
 	}
 	
 	// Log In Function	
-	public void LogIn() throws Exception
+	public HomePage LogIn() throws Exception
 	{
 		accessURL();
 		sendLogin();
@@ -103,8 +101,10 @@ public class LoginPage extends WebCommands{
 			addStep("Step 3 - Realizar Login");
 			TakeScreenshot();
 		} catch (Exception e) {
-			ExceptionThrown(e.toString());
+			ExceptionThrown(e.toString(), Constants.WEB_START_CONTENT_LINE);
 		}
+		
+		return new HomePage(driver);
 		
 	}	
 }

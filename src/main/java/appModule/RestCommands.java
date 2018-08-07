@@ -33,30 +33,32 @@ import utility.TestRail;
 
 public class RestCommands extends Config{
 	public static Response response;
+	public static String SheetName;
 	
 	// read config file
 	public static void start(String SheetName) throws Exception
 	{
 		// Open Excel File
-		ExcelUtils.setExcelFile(Constants.REST_FILE_PATH + Constants.REST_FILE_NAME, SheetName);
+		ExcelUtils.setExcelFile(Constants.FILE_PATH + Constants.FILE_NAME, SheetName);
 		Constants.logger.trace("Abrindo arquivo Excel");
+		RestCommands.SheetName = SheetName;
 	}
 	
 /********************************* CONSTRUCTOR COMMANDS *************************************/
 	// Build headers
-	public static void BuildHeaders(RequestSpecification request, String SheetName) throws Exception
+	public static void BuildHeaders(RequestSpecification request) throws Exception
 	{
 		int End = Constants.REST_START_CONTENT_LINE;
 		addStep("Payload");
 		String headers = "";
-		while(getCellData(End, Constants.HEADER_TC, SheetName) != "")
+		while(getCellData(End, Constants.HEADER_TC) != "")
 		{
 			request.header
 			(
-				getCellData(End,Constants.HEADER_TC, SheetName), 
-				getCellData(End,Constants.HEADER_CC, SheetName)
+				getCellData(End,Constants.HEADER_TC), 
+				getCellData(End,Constants.HEADER_CC)
 			);
-			headers = getCellData(End,Constants.HEADER_TC, SheetName) + ":" + getCellData(End,Constants.HEADER_CC, SheetName) + "\n";
+			headers = getCellData(End,Constants.HEADER_TC) + ":" + getCellData(End,Constants.HEADER_CC) + "\n";
 			End++;
 		}
 		addJSON(headers);
@@ -64,16 +66,16 @@ public class RestCommands extends Config{
 	
 	// build JSON
 	@SuppressWarnings("unchecked")
-	public static JSONObject BuildJSON(String SheetName) throws Exception
+	public static JSONObject BuildJSON() throws Exception
 	{
 		JSONObject json = new JSONObject();
 		int End = Constants.REST_START_CONTENT_LINE;
-		while(getCellData(End, Constants.FIELD_TC, SheetName) != "")
+		while(getCellData(End, Constants.FIELD_TC) != "")
 		{
 			json.put
 			(
-				getCellData(End, Constants.FIELD_TC, SheetName),
-				getCellData(End, Constants.FIELD_CC, SheetName)
+				getCellData(End, Constants.FIELD_TC),
+				getCellData(End, Constants.FIELD_CC)
 			);
 			End++;
 		}
@@ -110,7 +112,7 @@ public class RestCommands extends Config{
 	}
 	
 	/************** POST METHOD  ******************/
-	public static void POSTCommand(String EndPoint, String Path, String SheetName) throws Exception
+	public static void POSTCommand(String EndPoint, String Path) throws Exception
 	{
 		// Specified the ENDPOINT and PATH
 		RestAssured.baseURI = EndPoint;
@@ -119,10 +121,10 @@ public class RestCommands extends Config{
 		addStep("EndPoint:");
 		addJSON(EndPoint);
 		// ADD headers
-		BuildHeaders(httpRequest, SheetName);
+		BuildHeaders(httpRequest);
 		
 		// Construct JSON
-		JSONObject json = BuildJSON(SheetName);
+		JSONObject json = BuildJSON();
 		httpRequest.body(PreetyJSON(json.toJSONString()));
 		// evidence payload
 		addJSON(PreetyJSON(json.toJSONString()));
@@ -199,7 +201,7 @@ public class RestCommands extends Config{
 	
 /********************************* EVIDENCE COMMANDS ***************************************/
 	// Create evidence with the default Header
-	public static void createEvidence(String TestCaseName, String Objective, String ExpectedResult) throws MalformedURLException, DocumentException, IOException
+	public static void createEvidence(String TestCaseName, String Objective, String Environment, String ExpectedResult) throws MalformedURLException, DocumentException, IOException
 	{
 		// Log4j settings
 		Log.startTestCase(TestCaseName);
@@ -208,16 +210,27 @@ public class RestCommands extends Config{
 			readConfig("Project"),
 			TestCaseName,
 			Objective,
-			readConfig("Environment"),
+			Environment,
 			readConfig("Sprint"),
 			Constants.PROJECT_ED, 
 			ExpectedResult
 		);
 	}
 	
-	public static void ExceptionThrown(String ErrorToLog) throws DocumentException
+	public static void ExceptionThrown(String ErrorToLog, Integer ExcelFileLine) throws Exception
 	{
 		PDFCreator.logFatal(ErrorToLog);
+		
+		TestRail.AddResult
+		(
+			Constants.FILE_PATH + Constants.FILE_NAME,
+			SheetName,
+			ExcelFileLine, 
+			Constants.TESTRAIL_FAILED,
+			ErrorToLog
+		);
+		
+		throw new Exception(ErrorToLog);
 	}
 	
 	// Add Step into Evidence
@@ -259,11 +272,11 @@ public class RestCommands extends Config{
 		Constants.logger.error(Message);
 	}
 /********************************* EXCEL COMMANDS  ***************************************/
-	public static String getCellData(Integer Line, Integer Column, String SheetName) throws Exception
+	public static String getCellData(Integer Line, Integer Column) throws Exception
 	{
 		return ExcelUtils.getCellData
 		(
-			Constants.REST_FILE_PATH + Constants.REST_FILE_NAME,
+			Constants.FILE_PATH + Constants.FILE_NAME,
 			SheetName,
 			Line,
 			Column
@@ -273,42 +286,49 @@ public class RestCommands extends Config{
 	// Quit Excel File
 	public static void quitExcel() throws IOException
 	{
-		ExcelUtils.closeExcel(Constants.REST_FILE_PATH + Constants.REST_FILE_NAME);
+		ExcelUtils.closeExcel(Constants.FILE_PATH + Constants.FILE_NAME);
 	}
 	
 /**************************** ASSERTIONS COMMANDS *************************************/
-	public static void ValidateString(String SheetName, Integer RowNum, String expected, String current, String comment) throws Exception
+	public static void ValidateString(Integer RowNum, String expected, String current, String comment) throws Exception
 	{
-		Integer Result;
 		addStep("Validate:");
 		String Comment;
+		boolean shouldThrown = false;
+		
 		try 
 		{
 			Assert.assertEquals(expected, current);
-			addJSON(current);
-			Result = Constants.TESTRAIL_PASSED;
+			addJSON("Content " + current + " is equal to the content " + expected + " expected");
 			Comment = comment;
+			shouldThrown = false;
 		}
 		catch(AssertionError e)
 		{
-			Result = Constants.TESTRAIL_FAILED;
 			Comment = "Executado via automação com erro: \n" + e.toString();
-			ExceptionThrown(e.toString());
+			shouldThrown = true;
 		}
 		
 		// send result to Testrail
-		TestRail.AddResult
-		(
-			Constants.REST_FILE_PATH + Constants.REST_FILE_NAME,
-			SheetName, 
-			RowNum, 
-			Result,
-			Comment
-		);
+		if(shouldThrown)
+		{
+			ExceptionThrown(Comment, RowNum);
+		}
+		else
+		{
+			TestRail.AddResult
+			(
+				Constants.FILE_PATH + Constants.FILE_NAME,
+				SheetName, 
+				RowNum, 
+				Constants.TESTRAIL_PASSED,
+				Comment
+			);
+		}
 	}
-	
+/**************************** TESTRAIL COMMANDS *************************************/
 	// shouldTest
-	public static boolean ShouldTest(String FileName, String SheetName, Integer RowNum) throws Exception
+	public static boolean ShouldTest(String FileName, Integer RowNum) throws Exception
 	{
 		// get id
 		String Testid = ExcelUtils.getCellData(FileName, SheetName, RowNum, Constants.TEST_ID);

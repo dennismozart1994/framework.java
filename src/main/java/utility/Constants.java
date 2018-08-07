@@ -24,8 +24,8 @@ public class Constants {
 	
 	/**************** System URL or EndPoint and Path parameters *******************/
 	public static final String URL = "https://www.google.com.br";
-	// public static final String URL = "http://restapi.demoqa.com/customer/";
-	public static final String URL_PATH = "register";
+	public static final String API_URL = "http://restapi.demoqa.com/customer/";
+	public static final String API_PATH = "register";
 	
 	/*************************** TEST DATA ****************************************/
 	/*************************** WEB FILE INFO ***********************************/
@@ -39,8 +39,6 @@ public class Constants {
 	public static final Integer WEB_START_CONTENT_LINE = 1;
 	
 	/*************************** REST FILE INFO **********************************/
-	public static final String REST_FILE_PATH = System.getProperty("user.dir") + "\\data\\";
-	public static final String REST_FILE_NAME = "massaJSON.xlsx";
 	
 	// Title Column(_TC) and Content Column(_CC)
 	// Header and Fields
