@@ -31,6 +31,36 @@
 	    <version>6.14.3</version>
 	    <scope>test</scope>
 	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/io.appium/java-client -->
+	<dependency>
+	    <groupId>io.appium</groupId>
+	    <artifactId>java-client</artifactId>
+	    <version>6.1.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-lang3</artifactId>
+	    <version>3.7</version>
+	</dependency>
+	
+
+    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+	<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-java</artifactId>
+	    <version>3.13.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server -->
+	<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-server</artifactId>
+	    <version>3.13.0</version>
+	</dependency>
+	
   <!-- End of Framework Dependencies -->
   
   <!-- Start of REST dependencies -->
@@ -49,24 +79,6 @@
 	    <version>1.1.1</version>
 	</dependency>
 	<!-- End of REST dependencies -->
-	
-  
-    
-    <!-- Start of Selenium Dependencies -->
-    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
-	<dependency>
-	    <groupId>org.seleniumhq.selenium</groupId>
-	    <artifactId>selenium-java</artifactId>
-	    <version>3.13.0</version>
-	</dependency>
-	
-	<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server -->
-	<dependency>
-	    <groupId>org.seleniumhq.selenium</groupId>
-	    <artifactId>selenium-server</artifactId>
-	    <version>3.13.0</version>
-	</dependency>
-	<!-- End of Selenium Dependencies -->	
     
     <!-- Start of Utility dependencies -->
 	<!-- https://mvnrepository.com/artifact/log4j/apache-log4j-extras -->
