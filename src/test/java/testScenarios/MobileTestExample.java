@@ -1,27 +1,75 @@
 package testScenarios;
 
 import java.net.MalformedURLException;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
 import appModule.MobileCommands;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidElement;
 
 public class MobileTestExample extends MobileCommands{
 
 	@Test
-	public void RunApp() throws MalformedURLException, InterruptedException
+	public void FindElementSimple() throws MalformedURLException, InterruptedException
 	{
-		AndroidDriver<AndroidElement> driver = Capabilities("Android8", "ApiDemos-debug.apk");
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		driver.findElementByXPath("//android.widget.TextView[@text='Preference']").click();
-		driver.findElementByXPath("//android.widget.TextView[@text='3. Preference dependencies']").click();
-		driver.findElementById("android:id/checkbox").click();
-		driver.findElementByXPath("(//android.widget.RelativeLayout)[2]").click();
-		driver.findElementByClassName("android.widget.EditText").sendKeys("hello");
+		LaunchLocalApp("ApiDemos-debug.apk");
+		findByXpath("//android.widget.TextView[@text='Preference']").click();
+		findByXpath("//android.widget.TextView[@text='3. Preference dependencies']").click();
+		findById("android:id/checkbox").click();
+		findByXpath("(//android.widget.RelativeLayout)[2]").click();
+		findByClassName("android.widget.EditText").sendKeys("hello");
 		driver.findElementsByClassName("android.widget.Button").get(1).click();
 	}
 	
+	@Test
+	public void FindElementByUIAutomator() throws MalformedURLException, InterruptedException
+	{
+		LaunchLocalApp("Android8", "ApiDemos-debug.apk");
+		findByUIAutomator("text", "Views").click();
+	}
+	
+	@Test
+	public void TapGesture() throws MalformedURLException
+	{
+		LaunchLocalApp("Android8", "ApiDemos-debug.apk");
+		findByXpath("//android.widget.TextView[@text='Views']").click();
+		Tap(findByXpath("//android.widget.TextView[@text='Expandable Lists']"));
+	}
+	
+	@Test
+	public void LongPressGesture() throws MalformedURLException, InterruptedException
+	{
+		LaunchLocalApp("ApiDemos-debug.apk");
+		findByXpath("//android.widget.TextView[@text='Views']").click();
+		Tap(findByXpath("//android.widget.TextView[@text='Expandable Lists']"));
+		Tap(findByXpath("//android.widget.TextView[@text='1. Custom Adapter']"));
+		LongPress(findByXpath("//android.widget.TextView[@text='People Names']"), 3);
+	}
+	
+	@Test
+	public void SwipeFromElementToElement() throws MalformedURLException, InterruptedException
+	{
+		LaunchLocalApp("ApiDemos-debug.apk");
+		findByXpath("//android.widget.TextView[@text='Views']").click();
+		Tap(findByXpath("//android.widget.TextView[@text='Date Widgets']"));
+		Tap(findByUIAutomator("text", "2. Inline"));
+		Tap(findByXpath("//*[@content-desc='9']"));
+		Swipe(findByXpath("//*[@content-desc='15']"), findByXpath("//*[@content-desc='45']"));
+	}
+	
+	@Test
+	public void Scroll() throws MalformedURLException
+	{
+		LaunchLocalApp("ApiDemos-debug.apk");
+		findByXpath("//android.widget.TextView[@text='Views']").click();
+		AndroidScrollUntil("text", "WebView");
+	}
+	
+	@Test
+	public void DragAndDropTest() throws MalformedURLException
+	{
+		LaunchLocalApp("ApiDemos-debug.apk");
+		findByXpath("//android.widget.TextView[@text='Views']").click();
+		findByXpath("//android.widget.TextView[@text='Drag and Drop']").click();
+		DragAndDrop(driver.findElementsByClassName("android.view.View").get(0), driver.findElementsByClassName("android.view.View").get(2));
+	}
 }

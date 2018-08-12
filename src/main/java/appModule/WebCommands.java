@@ -76,7 +76,7 @@ public class WebCommands extends Config{
 	}
 	
 	// Click by link text
-	public void ClickByLinkText(String Link)
+	public void Click(String Link)
 	{
 		driver.findElement(By.linkText(Link)).click();
 	}
@@ -94,13 +94,23 @@ public class WebCommands extends Config{
 	}
 	
 	// Select element by visible text
-	public static void ComboSelectByVisibleText(WebElement field, String Value)
+	public static void ComboSelect(WebElement field, String Text)
 	{
 		// Construct select element
 		Select combo = new Select(field);
 		
 		// Select by visible text
-		combo.selectByVisibleText(Value); 
+		combo.selectByVisibleText(Text); 
+	}
+	
+	// Select element by the html select order
+	public static void ComboSelect(WebElement field, Integer Index)
+	{
+		// Construct select element
+		Select combo = new Select(field);
+		
+		// Select by index value of combo box
+		combo.selectByIndex(Index); 
 	}
 	
 	// Select element by the html value property
@@ -111,16 +121,6 @@ public class WebCommands extends Config{
 
 		// Select by html combo value
 		combo.selectByValue(Value); 
-	}
-	
-	// Select element by the html select order
-	public static void ComboSelectByIndex(WebElement field, Integer Value)
-	{
-		// Construct select element
-		Select combo = new Select(field);
-		
-		// Select by index value of combo box
-		combo.selectByIndex(Value); 
 	}
 /********************************* EVIDENCE COMMANDS ***************************************/
 	// Create evidence with the default Header
