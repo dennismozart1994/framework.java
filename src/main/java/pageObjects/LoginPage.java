@@ -1,30 +1,29 @@
 package pageObjects;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
-import appModule.WebCommands;
+import appCore.WebCommands;
 import utility.Constants;
 import utility.ExcelUtils;
 
 public class LoginPage extends WebCommands{
 	// public static WebDriver driver;
-	private WebDriver driver;
 	
 	// WebElements
-	private static WebElement login;
-	private static WebElement senha;
-	private static WebElement login_btn;
+	@FindBy(how = How.NAME, using = "login")
+	private WebElement login;
 	
-	// Constructor
-	public LoginPage(WebDriver driver) {
-		this.driver = driver;
-	}
+	@FindBy(how = How.NAME, using = "password")
+	private WebElement senha;
 	
+	@FindBy(how = How.TAG_NAME, using = "button")
+	private WebElement login_btn;	
 	
 	// Access URL Function
-	private void accessURL() throws Exception {
+	public static LoginPage accessURL() throws Exception {
 		driver.get(Constants.URL);		
 		Log("Abrindo URL...");
 		// add evidence
@@ -34,12 +33,12 @@ public class LoginPage extends WebCommands{
 		} catch (Exception e1) {
 			ExceptionThrown(e1.toString(), Constants.WEB_START_CONTENT_LINE);
 		}
+		return PageFactory.initElements(driver, LoginPage.class);
 	}
 	
 	private void sendLogin() throws Exception {
 		try {
 			Log("Typing User");
-			login = driver.findElement(By.name("login"));
 			InsertDataIntoField
 			(
 				login,
@@ -51,6 +50,8 @@ public class LoginPage extends WebCommands{
 					Constants.USER_C
 				)
 			);
+			// add evidence
+			TakeScreenshot();
 		}
 		catch(Exception e)
 		{
@@ -61,7 +62,6 @@ public class LoginPage extends WebCommands{
 
 	private void typePassword() throws Exception {
 		try {
-			senha = driver.findElement(By.name("password"));
 			Log("Typing password");
 			InsertDataIntoField
 			(
@@ -74,6 +74,8 @@ public class LoginPage extends WebCommands{
 					Constants.PASS_C
 				)
 			);
+			// add evidence
+			TakeScreenshot();
 		}
 		catch(Exception e)
 		{
@@ -84,27 +86,18 @@ public class LoginPage extends WebCommands{
 	// Log In Function	
 	public HomePage LogIn() throws Exception
 	{
-		accessURL();
+		addStep("Step 2 - Digitar usuário e senha");
 		sendLogin();
 		typePassword();
-		// add evidence
-		addStep("Step 2 - Digitar usuário e senha");
-		TakeScreenshot();
-		
 		try {
-			// step 3
-			login_btn = driver.findElement(By.tagName("button"));
 			Click(login_btn);
 			Log("Sign In");
-			
-			// add evidence
 			addStep("Step 3 - Realizar Login");
 			TakeScreenshot();
 		} catch (Exception e) {
 			ExceptionThrown(e.toString(), Constants.WEB_START_CONTENT_LINE);
 		}
-		
-		return new HomePage(driver);
+		return PageFactory.initElements(driver, HomePage.class);
 		
 	}	
 }

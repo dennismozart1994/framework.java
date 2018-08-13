@@ -1,19 +1,16 @@
 package pageObjects;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 public class HomePage {
-	// public static WebDriver driver;
-	private WebDriver driver;
 	
-	// Constructor
-	public HomePage(WebDriver driver) {
-		this.driver = driver;
-	}
+	@FindBy(how = How.ID, using = "main-content")
+	private WebElement mainContent;
+	
 	// simples find element
 	public WebElement findMain() throws Exception {
-		return driver.findElement(By.id("main-content"));
+		return mainContent;
 	}
 }

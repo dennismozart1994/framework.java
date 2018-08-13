@@ -1,4 +1,4 @@
-package appModule;
+package appCore;
 
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -24,7 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.itextpdf.text.DocumentException;
 
-import frameworkProperties.Config;
+import properties.Config;
 import utility.Constants;
 import utility.ExcelUtils;
 import utility.Log;
@@ -163,7 +163,7 @@ public class WebCommands extends Config{
 	}
 	
 	// Take Screenshot
-	public static void TakeScreenshot() throws IOException, DocumentException
+	public static void TakeScreenshot() throws IOException, DocumentException, InterruptedException
 	{
 		BufferedImage scrFile = null;
 		try {
@@ -173,7 +173,7 @@ public class WebCommands extends Config{
 		{
 			e.printStackTrace();
 		}
-		PDFCreator.addScreenshot(scrFile);	
+		PDFCreator.addScreenshot(scrFile);
 	}
 	
 	// Close PDF Evidence
@@ -286,7 +286,6 @@ public class WebCommands extends Config{
 /**************************** ASSERTIONS COMMANDS *************************************/
 	public static void ValidateString(Integer RowNum, String expected, String current, String comment) throws Exception
 	{
-		addStep("Validate:");
 		String Comment;
 		boolean shouldThrown = false;
 		
@@ -323,7 +322,6 @@ public class WebCommands extends Config{
 	// check if element is displayed
 	public static void PresenceValidation(WebElement element, Integer RowNum, String comment) throws Exception
 	{
-		addStep("Validate:");
 		try {
 			Assert.assertTrue(element.isDisplayed());
 			Log(comment);

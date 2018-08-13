@@ -1,10 +1,13 @@
-package appModule;
+package appCore;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
+import java.util.Scanner;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.touch.TouchActions;
@@ -28,60 +31,51 @@ public class MobileCommands {
 	public static AndroidDriver<MobileElement> driver = null;
 	
 	/************************ LAUNCH APPS METHODS **********************************/
-	// Android Real Devices Launch
-	public static AndroidDriver<MobileElement> LaunchLocalApp(String App) throws MalformedURLException
+	// Android Browser App Launch
+		public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, CharSequence Browser) throws MalformedURLException
+		{
+			DesiredCapabilities cap = new DesiredCapabilities();
+			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+			cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
+			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
+			cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
+			cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "25");
+			cap.setCapability(MobileCapabilityType.BROWSER_NAME, Browser);
+			
+			driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			return driver;
+		}
+	
+	// Android Local App Launch
+	public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, String App) throws MalformedURLException
 	{
 		File f = new File("apps");
 		File fs = new File(f, App);
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+		cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
+		cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
+		cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
 		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "25");
 		cap.setCapability(MobileCapabilityType.APP, fs.getAbsolutePath());
-		cap.setCapability(MobileCapabilityType.DEVICE_NAME, "Android device");
 		
 		driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
 	}
-	
-	public static AndroidDriver<MobileElement> LaunchLocalApp(String PackageName, String Activity) throws MalformedURLException
+	// Android App already installed Launch
+	public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, String PackageName, String Activity) throws MalformedURLException
 	{
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+		cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
+		cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
+		cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
 		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "25");
 		cap.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PackageName);
 		cap.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, Activity);
-		cap.setCapability(MobileCapabilityType.DEVICE_NAME, "Android device");	
-		
-		driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		return driver;
-	}
-	// Android Emulator Launch
-	public static AndroidDriver<MobileElement> LaunchLocalApp(CharSequence Emulator, String App) throws MalformedURLException
-	{
-		File f = new File("apps");
-		File fs = new File(f, App);
-		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "25");
-		cap.setCapability(MobileCapabilityType.APP, fs.getAbsolutePath());
-		cap.setCapability(MobileCapabilityType.DEVICE_NAME, Emulator);
-		
-		driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		return driver;
-	}
-	
-	public static AndroidDriver<MobileElement> LaunchLocalApp(CharSequence Emulator, String PackageName, String Activity) throws MalformedURLException
-	{
-		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-		cap.setCapability(MobileCapabilityType.DEVICE_NAME, Emulator);	
-		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "25");
-		cap.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PackageName);
-		cap.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, Activity);
-		
+				
 		driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
@@ -207,17 +201,32 @@ public class MobileCommands {
 	
 	// Android Scroll until element shows up
 	@SuppressWarnings("rawtypes")
-	public static void AndroidScrollUntil(String attribute, String Value)
+	public static void ScrollUntil(String attribute, String Value)
 	{
 		((FindsByAndroidUIAutomator) driver).findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(" + attribute + "(\"" + Value + "\"))");
 	}
 	
+	/************************ HYBRID APPS COMMANDS **********************************/
+	// return all contexts if there more than one, for example
+	// 1 native   1 Web
+	public static Set<String> GetCurrentContexts()
+	{
+		return driver.getContextHandles();
+	}
+	
+	// Switch to different context into hybrid apps, the Context Handle needs
+	// to be the exactly string returned into one of the strings from the function GetContextHandles
+	public static void SwitchToContext(String ContextHandle)
+	{
+		driver.context(ContextHandle);
+	}
 	/************************ GET COMMANDS **********************************/
 	// get text of an element
 	public static String GetContent(MobileElement element)
 	{
 		return element.getText();
 	}
+	
 	
 	// return if it's a Native_APP only, Hybrid APP or Web view App
 	public static String GetContext()
@@ -230,4 +239,24 @@ public class MobileCommands {
 	{
 		return driver.getOrientation().toString();
 	}
+	
+	private static String getDeviceSerialNumber(String device) {
+		Scanner scanner = null;
+		try {
+			device = device.trim().toLowerCase();
+			String os = System.getProperty("os.name");
+			
+			if (os.startsWith("Windows"))
+				scanner = new Scanner(Runtime.getRuntime().exec("cmd /c adb get-serialno").getInputStream());
+			else if (os.startsWith("Mac") && device.equalsIgnoreCase("android"))
+				scanner = new Scanner(Runtime.getRuntime().exec(new String[] {"/bin/bash", "-l", "-c", "adb get-serialno"}).getInputStream());
+			else 
+				scanner = new Scanner(Runtime.getRuntime().exec(new String[] {"/bin/bash", "-l", "-c", "idevice_id -l"}).getInputStream());
+			
+		} catch (IOException e) {
+			System.err.println("Erro ao obter o serial number do dispositivo");
+		}
+		String deviceSerialNumver = (scanner != null && scanner.hasNext()) ? scanner.next() : "";
+		return deviceSerialNumver;
+	}  
 }

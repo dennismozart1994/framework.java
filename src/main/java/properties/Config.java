@@ -1,4 +1,4 @@
-package frameworkProperties;
+package properties;
 
 import java.io.File;
 import java.io.FileReader;
@@ -13,7 +13,7 @@ public class Config {
 	public static void loadConfig() throws IOException
 	{
 		config = new Properties();
-		File f = new File(System.getProperty("user.dir") + "\\src\\main\\java\\frameworkProperties\\config.properties");
+		File f = new File(System.getProperty("user.dir") + "\\src\\main\\java\\properties\\config.properties");
 		FileReader obj = new FileReader(f);
 		config.load(obj);
 	}

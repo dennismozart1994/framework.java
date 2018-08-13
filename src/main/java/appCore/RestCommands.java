@@ -1,4 +1,4 @@
-package appModule;
+package appCore;
 
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -16,7 +16,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.itextpdf.text.DocumentException;
 
-import frameworkProperties.Config;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
@@ -25,6 +24,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import properties.Config;
 import utility.Constants;
 import utility.ExcelUtils;
 import utility.Log;

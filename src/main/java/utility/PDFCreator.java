@@ -24,7 +24,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import frameworkProperties.Config;
+import properties.Config;
 
 public class PDFCreator {
 	private static Document document;

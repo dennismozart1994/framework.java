@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Test;
 
-import appModule.WebCommands;
+import appCore.WebCommands;
 import pageObjects.HomePage;
 import pageObjects.LoginPage;
 import utility.Constants;
@@ -38,9 +38,11 @@ public class TestWebExample extends WebCommands{
 	public void exampleTest() throws Exception
 	{
 		if(shouldTest)
-		{
+		{	
 			// Test Steps
-			HomePage home = new LoginPage(driver).LogIn();
+			LoginPage loginPage = LoginPage.accessURL();
+			HomePage home = loginPage.LogIn();
+						
 			// validation
 			PresenceValidation
 			(

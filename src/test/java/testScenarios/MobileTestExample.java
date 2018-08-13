@@ -4,14 +4,14 @@ import java.net.MalformedURLException;
 
 import org.junit.Test;
 
-import appModule.MobileCommands;
+import appCore.MobileCommands;
 
 public class MobileTestExample extends MobileCommands{
 
 	@Test
 	public void FindElementSimple() throws MalformedURLException, InterruptedException
 	{
-		LaunchLocalApp("ApiDemos-debug.apk");
+		LaunchLocalApp("Android Device", "ApiDemos-debug.apk");
 		findByXpath("//android.widget.TextView[@text='Preference']").click();
 		findByXpath("//android.widget.TextView[@text='3. Preference dependencies']").click();
 		findById("android:id/checkbox").click();
@@ -23,14 +23,14 @@ public class MobileTestExample extends MobileCommands{
 	@Test
 	public void FindElementByUIAutomator() throws MalformedURLException, InterruptedException
 	{
-		LaunchLocalApp("Android8", "ApiDemos-debug.apk");
+		LaunchLocalApp("Android Device", "ApiDemos-debug.apk");
 		findByUIAutomator("text", "Views").click();
 	}
 	
 	@Test
 	public void TapGesture() throws MalformedURLException
 	{
-		LaunchLocalApp("Android8", "ApiDemos-debug.apk");
+		LaunchLocalApp("Android Device", "ApiDemos-debug.apk");
 		findByXpath("//android.widget.TextView[@text='Views']").click();
 		Tap(findByXpath("//android.widget.TextView[@text='Expandable Lists']"));
 	}
@@ -38,7 +38,7 @@ public class MobileTestExample extends MobileCommands{
 	@Test
 	public void LongPressGesture() throws MalformedURLException, InterruptedException
 	{
-		LaunchLocalApp("ApiDemos-debug.apk");
+		LaunchLocalApp("Android Device", "ApiDemos-debug.apk");
 		findByXpath("//android.widget.TextView[@text='Views']").click();
 		Tap(findByXpath("//android.widget.TextView[@text='Expandable Lists']"));
 		Tap(findByXpath("//android.widget.TextView[@text='1. Custom Adapter']"));
@@ -48,7 +48,7 @@ public class MobileTestExample extends MobileCommands{
 	@Test
 	public void SwipeFromElementToElement() throws MalformedURLException, InterruptedException
 	{
-		LaunchLocalApp("ApiDemos-debug.apk");
+		LaunchLocalApp("Android Device", "ApiDemos-debug.apk");
 		findByXpath("//android.widget.TextView[@text='Views']").click();
 		Tap(findByXpath("//android.widget.TextView[@text='Date Widgets']"));
 		Tap(findByUIAutomator("text", "2. Inline"));
@@ -59,15 +59,15 @@ public class MobileTestExample extends MobileCommands{
 	@Test
 	public void Scroll() throws MalformedURLException
 	{
-		LaunchLocalApp("ApiDemos-debug.apk");
+		LaunchLocalApp("Android Device", "ApiDemos-debug.apk");
 		findByXpath("//android.widget.TextView[@text='Views']").click();
-		AndroidScrollUntil("text", "WebView");
+		ScrollUntil("text", "WebView");
 	}
 	
 	@Test
 	public void DragAndDropTest() throws MalformedURLException
 	{
-		LaunchLocalApp("ApiDemos-debug.apk");
+		LaunchLocalApp("Android Device", "ApiDemos-debug.apk");
 		findByXpath("//android.widget.TextView[@text='Views']").click();
 		findByXpath("//android.widget.TextView[@text='Drag and Drop']").click();
 		DragAndDrop(driver.findElementsByClassName("android.view.View").get(0), driver.findElementsByClassName("android.view.View").get(2));

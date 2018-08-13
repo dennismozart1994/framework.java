@@ -23,7 +23,7 @@ public class Constants {
 	public static final Integer TESTRAIL_FAILED = 5;
 	
 	/**************** System URL or EndPoint and Path parameters *******************/
-	public static final String URL = "https://www.google.com.br";
+	public static final String URL = "http://localhost/ManageTeamSystem/";
 	public static final String API_URL = "http://restapi.demoqa.com/customer/";
 	public static final String API_PATH = "register";
 	
