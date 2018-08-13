@@ -18,7 +18,6 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -46,7 +45,7 @@ public class PDFCreator {
 	{
 		// add image
 		Image logo = Image.getInstance(System.getProperty("user.dir") + "\\target\\logo\\" + Config.readConfig("Logo"));
-		logo.scalePercent(5f);
+		logo.scalePercent(10f);
 		logo.setAlignment(Element.ALIGN_LEFT);
 		document.add(logo);
 		// Create table with the numbers of collums informed.
@@ -64,7 +63,7 @@ public class PDFCreator {
 		cell.setColspan(14);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		cell.setVerticalAlignment(Element.ALIGN_CENTER);
-		cell.setBackgroundColor(new GrayColor(0.2f));
+		cell.setBackgroundColor(new BaseColor(0, 87, 53));
 		table.addCell(cell);
 		
 		// Testname
@@ -178,6 +177,14 @@ public class PDFCreator {
 		PdfContentByte pdfCB = new PdfContentByte(writer);
 		Image scr = Image.getInstance(pdfCB, screenshot, 1);
 		scr.scalePercent(40f);
+		document.add(scr);
+	}
+	
+	public static void addMobileScreenshot(BufferedImage screenshot) throws DocumentException, IOException
+	{
+		PdfContentByte pdfCB = new PdfContentByte(writer);
+		Image scr = Image.getInstance(pdfCB, screenshot, 1);
+		scr.scaleToFit(200.f, 400.f);
 		document.add(scr);
 	}
 	

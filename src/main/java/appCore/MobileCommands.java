@@ -1,24 +1,35 @@
 package appCore;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
+
 import java.util.Scanner;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.itextpdf.text.DocumentException;
+
 import io.appium.java_client.FindsByAndroidUIAutomator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
+import io.appium.java_client.android.nativekey.KeyEventFlag;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.remote.MobilePlatform;
@@ -26,13 +37,17 @@ import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.TapOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
+import properties.Config;
+import utility.Constants;
+import utility.Log;
+import utility.PDFCreator;
 
-public class MobileCommands {
+public class MobileCommands extends Config{
 	public static AndroidDriver<MobileElement> driver = null;
 	
 	/************************ LAUNCH APPS METHODS **********************************/
 	// Android Browser App Launch
-		public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, CharSequence Browser) throws MalformedURLException
+		public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, CharSequence Browser) throws DocumentException, IOException
 		{
 			DesiredCapabilities cap = new DesiredCapabilities();
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
@@ -44,11 +59,15 @@ public class MobileCommands {
 			
 			driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			
+			addStep("Open App: ");
+			TakeScreenshot();
+			
 			return driver;
 		}
 	
 	// Android Local App Launch
-	public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, String App) throws MalformedURLException
+	public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, String App) throws MalformedURLException, DocumentException, IOException
 	{
 		File f = new File("apps");
 		File fs = new File(f, App);
@@ -62,10 +81,14 @@ public class MobileCommands {
 		
 		driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		addStep("Open App: ");
+		TakeScreenshot();
+		
 		return driver;
 	}
 	// Android App already installed Launch
-	public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, String PackageName, String Activity) throws MalformedURLException
+	public static AndroidDriver<MobileElement> LaunchLocalApp(String DeviceName, String PackageName, String Activity) throws MalformedURLException, DocumentException, IOException
 	{
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
@@ -78,11 +101,14 @@ public class MobileCommands {
 				
 		driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		addStep("Open App: ");
+		TakeScreenshot();
+		
 		return driver;
 	}
 	
-	/************************ FIND ELEMENTS METHODS 
-	 * @throws InterruptedException **********************************/
+	/************************ FIND ELEMENTS METHODS **********************************/
 	@SuppressWarnings("rawtypes")
 	public static MobileElement findByUIAutomator(String Attribute, String Value) throws InterruptedException
 	{
@@ -110,6 +136,27 @@ public class MobileCommands {
 	
 	
 	/************************ MOBILE GESTURES **********************************/	
+	// Tap back Android Button
+	public static void TapBack()
+	{
+		driver.pressKey(new KeyEvent(AndroidKey.BACK).
+				withFlag(KeyEventFlag.SOFT_KEYBOARD).
+				withFlag(KeyEventFlag.EDITOR_ACTION));
+	}
+	// Tap home Android Button
+	public static void TapHome()
+	{
+		driver.pressKey(new KeyEvent(AndroidKey.HOME).
+				withFlag(KeyEventFlag.SOFT_KEYBOARD).
+				withFlag(KeyEventFlag.EDITOR_ACTION));
+	}
+	// Tap the square that opens all the apps opened into the phone
+	public static void TapSwitch()
+	{
+		driver.pressKey(new KeyEvent(AndroidKey.APP_SWITCH).
+				withFlag(KeyEventFlag.SOFT_KEYBOARD).
+				withFlag(KeyEventFlag.EDITOR_ACTION));
+	}
 	// simple tap, click on element
 	public static void Tap(MobileElement element)
 	{
@@ -258,5 +305,57 @@ public class MobileCommands {
 		}
 		String deviceSerialNumver = (scanner != null && scanner.hasNext()) ? scanner.next() : "";
 		return deviceSerialNumver;
-	}  
+	}
+	
+	/************************ EVIDENCE METHODS **********************************/
+	/********************************* EVIDENCE COMMANDS ***************************************/
+	// Create evidence with the default Header
+	public static void createEvidence(String TestCaseName, String Objective, String ExpectedResult, String Environment) throws MalformedURLException, DocumentException, IOException
+	{
+		// Log4j settings
+		Log.startTestCase(TestCaseName);
+		Log("Creating test evidence...");
+		PDFCreator.createPDF(
+			readConfig("Project"),
+			TestCaseName,
+			Objective,
+			Environment,
+			readConfig("Sprint"),
+			Constants.PROJECT_ED, 
+			ExpectedResult
+		);
+	}
+	
+	public static void ExceptionThrown(String ErrorToLog, Integer ExcelFileLine) throws Exception
+	{
+		PDFCreator.logFatal(ErrorToLog);		
+		throw new Exception(ErrorToLog);
+	}
+	
+	// Add Step into Evidence
+	public static void addStep(String Step) throws DocumentException
+	{
+		PDFCreator.addStep(Step);
+	}
+	
+	// Takes Screenshot and Add into PDF Evidence
+	public static void TakeScreenshot() throws IOException, DocumentException
+	{
+		File scr = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		BufferedImage screenshot = ImageIO.read(scr);
+		PDFCreator.addMobileScreenshot(screenshot);
+	}
+	
+	// Close PDF Evidence
+	public static void FinishEvidence(String TestName)
+	{
+		PDFCreator.quitPDF();
+		Log.endTestCase(TestName);
+	}
+	
+	/********************************* LOG COMMANDS ***************************************/
+	public static void Log(String Message)
+	{
+		Constants.logger.error(Message);
+	}
 }
