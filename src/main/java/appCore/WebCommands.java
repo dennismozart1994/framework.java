@@ -44,17 +44,17 @@ public class WebCommands extends Config{
 		switch(readConfig("Browser"))
 		{
 			case "CHROME":
-				System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\drivers\\chromedriver.exe");
+				System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/drivers/chromedriver.exe");
 				WebCommands.driver = new ChromeDriver();
 				WebCommands.driver.manage().window().maximize();
 			break;
 			case "FIREFOX":
-				System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "\\drivers\\geckodriver.exe");
+				System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/drivers/geckodriver.exe");
 				WebCommands.driver = new FirefoxDriver();
 				WebCommands.driver.manage().window().maximize();
 			break;
 			default:
-				System.setProperty("webdriver.ie.driver", System.getProperty("user.dir") + "\\drivers\\IEDriverServer.exe");
+				System.setProperty("webdriver.ie.driver", System.getProperty("user.dir") + "/drivers/IEDriverServer.exe");
 				WebCommands.driver = new InternetExplorerDriver();
 				WebCommands.driver.manage().window().maximize();
 			break;

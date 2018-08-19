@@ -13,7 +13,7 @@ public class Config {
 	public static void loadConfig() throws IOException
 	{
 		config = new Properties();
-		File f = new File(System.getProperty("user.dir") + "\\src\\main\\java\\properties\\config.properties");
+		File f = new File(System.getProperty("user.dir") + "/src/main/java/properties/config.properties");
 		FileReader obj = new FileReader(f);
 		config.load(obj);
 	}

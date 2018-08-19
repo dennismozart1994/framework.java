@@ -33,7 +33,7 @@ public class PDFCreator {
 	{
 		String date = new SimpleDateFormat("yyyy_MM_dd").format(new Date());
 		String time = new SimpleDateFormat("hh_MM_ss").format(new Date());
-		String filePath = System.getProperty("user.dir") + "\\evidences\\" + TestCaseName + "_date_" + date + "_time_" + time + ".pdf";
+		String filePath = System.getProperty("user.dir") + "/evidences/" + TestCaseName + "_date_" + date + "_time_" + time + ".pdf";
 		document = new Document();
 		writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
 		document.open();
@@ -44,7 +44,7 @@ public class PDFCreator {
 	public static PdfPTable createTestHeader(String ProjectName, String TestCaseName, String Objective, String Environment, String Sprint, String ExecutionDate, String Result) throws MalformedURLException, IOException, DocumentException
 	{
 		// add image
-		Image logo = Image.getInstance(System.getProperty("user.dir") + "\\target\\logo\\" + Config.readConfig("Logo"));
+		Image logo = Image.getInstance(System.getProperty("user.dir") + "/target/logo/" + Config.readConfig("Logo"));
 		logo.scalePercent(10f);
 		logo.setAlignment(Element.ALIGN_LEFT);
 		document.add(logo);

@@ -29,7 +29,7 @@ public class Constants {
 	
 	/*************************** TEST DATA ****************************************/
 	/*************************** WEB FILE INFO ***********************************/
-	public static final String FILE_PATH = System.getProperty("user.dir") + "\\data\\";
+	public static final String FILE_PATH = System.getProperty("user.dir") + "/data/";
 	public static final String FILE_NAME = "massa.xlsx";
 	
 	// column(_C) and row(_C)

@@ -12,18 +12,17 @@ import com.itextpdf.text.DocumentException;
 import appCore.MobileCommands;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import pageObjects.MobilePageObjectExample;
 
-public class MobileTestExample{
-	
-	private AppiumDriver<MobileElement> driver = null;
+public class MobileiOSExample {
+@SuppressWarnings("unused")
+private AppiumDriver<MobileElement> driver = null;
 	
 	@Before
 	public void begin() throws MalformedURLException, DocumentException, IOException
 	{
 		MobileCommands.createEvidence(MobileTestExample.class.getName(), "Test ios", "ios opened", "iOS");
 		
-		this.driver = MobileCommands.LaunchLocalApp("Android", "ApiDemos-debug.apk");
+		this.driver = MobileCommands.LaunchLocalApp("iPhone 8", "/Users/dennismozart/Desktop/UICatalog.app");
 	}
 	
 	@After
@@ -33,8 +32,11 @@ public class MobileTestExample{
 	}
 	
 	@Test
-	public void FindElementSimple() throws DocumentException, IOException, InterruptedException
+	public void Test()
 	{
-		new MobilePageObjectExample(driver).TapPreferences();		
+		MobileCommands.findByAcessibilityID("Alert Views").click();
+		MobileCommands.findByXpath("//*[@value='Text Entry']").click();
+		MobileCommands.findByClassName("XCUIElementTypeTextField").sendKeys("hello");
+		MobileCommands.findByName("OK").click();
 	}
 }
