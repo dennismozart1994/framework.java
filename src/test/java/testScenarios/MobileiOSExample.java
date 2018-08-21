@@ -38,8 +38,5 @@ private AppiumDriver<MobileElement> driver = null;
 		MobileCommands.findByXpath("//*[@value='Text Entry']").click();
 		MobileCommands.findByClassName("XCUIElementTypeTextField").sendKeys("hello");
 		MobileCommands.findByName("OK").click();
-		MobileCommands.NavigateBack();
-		MobileCommands.ScrollUntil(true, MobileCommands.findByAcessibilityID("Steppers"));
-		MobileCommands.findByAcessibilityID("Steppers").click();
 	}
 }
