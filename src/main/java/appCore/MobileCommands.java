@@ -10,14 +10,17 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -208,6 +211,7 @@ public class MobileCommands extends Config{
 				withFlag(KeyEventFlag.SOFT_KEYBOARD).
 				withFlag(KeyEventFlag.EDITOR_ACTION));
 	}
+	
 	// Tap home Android Button
 	public static void TapHome()
 	{
@@ -222,6 +226,13 @@ public class MobileCommands extends Config{
 				withFlag(KeyEventFlag.SOFT_KEYBOARD).
 				withFlag(KeyEventFlag.EDITOR_ACTION));
 	}
+	
+	// Navigate back
+	public static void NavigateBack()
+	{
+		driver.navigate().back();
+	}
+	
 	// simple tap, click on element
 	public static void Tap(MobileElement element)
 	{
@@ -316,6 +327,26 @@ public class MobileCommands extends Config{
 	public static void ScrollUntil(String attribute, String Value)
 	{
 		((FindsByAndroidUIAutomator) driver).findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(" + attribute + "(\"" + Value + "\"))");
+	}
+	
+	// Default Scroll
+	@SuppressWarnings("unchecked")
+	public static void ScrollUntil(boolean down, MobileElement element)
+	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		@SuppressWarnings("rawtypes")
+		HashMap scrollObject = new HashMap<>();
+		scrollObject.put("scrollObject", ((RemoteWebElement) element).getId());
+		if(down)
+		{
+			scrollObject.put("direction", "down");
+		}
+		else
+		{
+			scrollObject.put("direction", "up");
+		}
+		
+		js.executeScript("mobile: scroll", scrollObject);
 	}
 	
 	/************************ HYBRID APPS COMMANDS **********************************/
