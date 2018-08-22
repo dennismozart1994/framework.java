@@ -319,6 +319,12 @@ public class MobileCommands extends Config{
 		new TouchAction<>(driver).longPress(LongPressOptions.longPressOptions().withElement(ElementOption.element(Origin))).moveTo(PointOption.point(X, Y)).release().perform();
 	}
 	
+	// Set the value into whell dropdown components
+	public static void setWhellValue(MobileElement element, String value)
+	{
+		element.sendKeys(value);
+	}
+	
 	// Android Scroll until element shows up
 	@SuppressWarnings("rawtypes")
 	public static void ScrollUntil(String attribute, String Value)

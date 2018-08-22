@@ -41,5 +41,15 @@ private AppiumDriver<MobileElement> driver = null;
 		MobileCommands.NavigateBack();
 		MobileCommands.ScrollUntil(true, MobileCommands.findByAcessibilityID("Steppers"));
 		MobileCommands.findByAcessibilityID("Steppers").click();
+		MobileCommands.findByAcessibilityID("Increment").click();
+		MobileCommands.findByAcessibilityID("Increment").click();
+		driver.findElementsByXPath("//XCUIElementTypeButton[@name=\"Increment\"]").get(0).click();
+		driver.findElementsByXPath("//XCUIElementTypeButton[@name=\"Increment\"]").get(0).click();
+		driver.findElementsByClassName("XCUIElementTypeStaticText").get(0).getText();
+		MobileCommands.NavigateBack();
+		MobileCommands.findByAcessibilityID("Picker View").click();
+		MobileCommands.setWhellValue(MobileCommands.findByAcessibilityID("Green color component value"), "255");
+		MobileCommands.setWhellValue(MobileCommands.findByAcessibilityID("Red color component value"), "55");
+		MobileCommands.setWhellValue(MobileCommands.findByAcessibilityID("Blue color component value"), "130");
 	}
 }
