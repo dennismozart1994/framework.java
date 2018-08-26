@@ -18,7 +18,7 @@ public class RestPOSTTestExample extends RestCommands{
 	{	
 		// Open Excel file using sheetName as a parameter
 		start("JSON");
-		shouldTest = ShouldTest(Constants.FILE_PATH + Constants.FILE_NAME, Constants.REST_START_CONTENT_LINE);
+		shouldTest = true;
 		
 		// check if should test
 		if(shouldTest)

@@ -14,7 +14,6 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
 public class MobileiOSExample {
-@SuppressWarnings("unused")
 private AppiumDriver<MobileElement> driver = null;
 	
 	@Before
