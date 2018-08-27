@@ -58,7 +58,7 @@ public class RestPOSTTestExample extends RestCommands{
 		if(shouldTest)
 		{
 			// Close PDF Evidence File
-			FinishEvidence(TestWebExample.class.getName());
+			FinishEvidence(RestPOSTTestExample.class.getName());
 		}
 		// Close Excel File
 		quitExcel();
