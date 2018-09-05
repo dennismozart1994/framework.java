@@ -75,6 +75,7 @@ public class MobileCommands extends Config{
 				cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
 				cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 				cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
+				cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
 				// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
 				// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 				driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
@@ -114,6 +115,7 @@ public class MobileCommands extends Config{
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
+			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
 			// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
 			// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 			cap.setCapability(MobileCapabilityType.APP, App);
@@ -151,6 +153,7 @@ public class MobileCommands extends Config{
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
+			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
 			// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
 			// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 			cap.setCapability(IOSMobileCapabilityType.BUNDLE_ID, ActivityorBundleID);
@@ -425,7 +428,7 @@ public class MobileCommands extends Config{
 		);
 	}
 	
-	public static void ExceptionThrown(String ErrorToLog, Integer ExcelFileLine) throws Exception
+	public static void ExceptionThrown(String ErrorToLog) throws Exception
 	{
 		PDFCreator.logFatal(ErrorToLog);		
 		throw new Exception(ErrorToLog);

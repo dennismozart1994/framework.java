@@ -29,7 +29,6 @@ import utility.Constants;
 import utility.ExcelUtils;
 import utility.Log;
 import utility.PDFCreator;
-import utility.TestRail;
 
 public class RestCommands extends Config{
 	public static Response response;
@@ -217,19 +216,10 @@ public class RestCommands extends Config{
 		);
 	}
 	
-	public static void ExceptionThrown(String ErrorToLog, Integer ExcelFileLine) throws Exception
+	public static void ExceptionThrown(String ErrorToLog) throws Exception
 	{
 		PDFCreator.logFatal(ErrorToLog);
-		
-		TestRail.AddResult
-		(
-			Constants.FILE_PATH + Constants.FILE_NAME,
-			SheetName,
-			ExcelFileLine, 
-			Constants.TESTRAIL_FAILED,
-			ErrorToLog
-		);
-		
+		//Add failed result to any tool here
 		throw new Exception(ErrorToLog);
 	}
 	
@@ -309,41 +299,14 @@ public class RestCommands extends Config{
 			shouldThrown = true;
 		}
 		
-		// send result to Testrail
+		// Result
 		if(shouldThrown)
 		{
-			ExceptionThrown(Comment, RowNum);
+			ExceptionThrown(Comment);
 		}
 		else
 		{
-			TestRail.AddResult
-			(
-				Constants.FILE_PATH + Constants.FILE_NAME,
-				SheetName, 
-				RowNum, 
-				Constants.TESTRAIL_PASSED,
-				Comment
-			);
-		}
-	}
-/**************************** TESTRAIL COMMANDS *************************************/
-	// shouldTest
-	public static boolean ShouldTest(String FileName, Integer RowNum) throws Exception
-	{
-		// get id
-		String Testid = ExcelUtils.getCellData(FileName, SheetName, RowNum, Constants.TEST_ID);
-		Integer sub = Integer.parseInt(Testid.substring(1));
-		
-		// get status
-		Integer status = TestRail.GetTestResult(sub);
-		
-		if(status == Constants.TESTRAIL_PASSED)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
+			// add success result to any tool here
 		}
 	}
 }

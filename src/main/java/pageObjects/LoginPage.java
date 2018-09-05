@@ -31,7 +31,7 @@ public class LoginPage extends WebCommands{
 			addStep("Step 1 - Acessar URL");
 			TakeScreenshot();
 		} catch (Exception e1) {
-			ExceptionThrown(e1.toString(), Constants.WEB_START_CONTENT_LINE);
+			ExceptionThrown(e1.toString());
 		}
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
@@ -55,7 +55,7 @@ public class LoginPage extends WebCommands{
 		}
 		catch(Exception e)
 		{
-			ExceptionThrown(e.toString(), Constants.WEB_START_CONTENT_LINE);
+			ExceptionThrown(e.toString());
 		}
 	}
 	
@@ -79,7 +79,7 @@ public class LoginPage extends WebCommands{
 		}
 		catch(Exception e)
 		{
-			ExceptionThrown(e.toString(), Constants.WEB_START_CONTENT_LINE);
+			ExceptionThrown(e.toString());
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class LoginPage extends WebCommands{
 			addStep("Step 3 - Realizar Login");
 			TakeScreenshot();
 		} catch (Exception e) {
-			ExceptionThrown(e.toString(), Constants.WEB_START_CONTENT_LINE);
+			ExceptionThrown(e.toString());
 		}
 		return PageFactory.initElements(driver, HomePage.class);
 		

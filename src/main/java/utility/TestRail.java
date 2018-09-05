@@ -29,14 +29,8 @@ public class TestRail {
 	
 	// Add Result to a test
 	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
-	public static void AddResult(String FileName, String SheetName, Integer RowNum, Integer FinalResult, String Comment) throws Exception
-	{
-		// get ids
-		String idcase = ExcelUtils.getCellData(FileName, SheetName, RowNum, Constants.CASE_ID);
-		Integer CaseID = Integer.parseInt(idcase.substring(1));
-		String idrun = ExcelUtils.getCellData(FileName, SheetName, RowNum, Constants.RUN_ID);
-		Integer RunID = Integer.parseInt(idrun.substring(1));
-		
+	public static void AddResult(Integer CaseID, Integer RunID, Integer FinalResult, String Comment) throws Exception
+	{	
 		// add result to testrail
 		APIClient client = SetupConnection();
 		Map body = new HashMap();
@@ -48,5 +42,21 @@ public class TestRail {
 				"/add_result_for_case/" + RunID + "/" + CaseID,
 				body
 			);
+	}
+	
+	// Verify if a test is already passed into TestRail
+	public static boolean ShouldTest(Integer TestID) throws Exception
+	{
+		// get status
+		Integer status = TestRail.GetTestResult(TestID);
+		
+		if(status == Constants.TESTRAIL_PASSED)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }
