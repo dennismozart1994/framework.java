@@ -22,7 +22,6 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
 import properties.Config;
 
 public class PDFCreator {
@@ -45,7 +44,7 @@ public class PDFCreator {
 	{
 		// add image
 		Image logo = Image.getInstance(System.getProperty("user.dir") + "/target/logo/" + Config.readConfig("Logo"));
-		logo.scalePercent(10f);
+		logo.scalePercent(Float.parseFloat(Config.readConfig("Logo-Scaling")));
 		logo.setAlignment(Element.ALIGN_LEFT);
 		document.add(logo);
 		// Create table with the numbers of collums informed.
@@ -63,7 +62,13 @@ public class PDFCreator {
 		cell.setColspan(14);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		cell.setVerticalAlignment(Element.ALIGN_CENTER);
-		cell.setBackgroundColor(new BaseColor(0, 87, 53));
+		cell.setBackgroundColor(
+				new BaseColor(
+					Integer.parseInt(Config.readConfig("HCR")),
+					Integer.parseInt(Config.readConfig("HCG")),
+					Integer.parseInt(Config.readConfig("HCB"))
+					)
+				);
 		table.addCell(cell);
 		
 		// Testname

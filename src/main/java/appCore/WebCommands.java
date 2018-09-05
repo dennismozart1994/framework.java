@@ -26,10 +26,8 @@ import com.itextpdf.text.DocumentException;
 
 import properties.Config;
 import utility.Constants;
-import utility.ExcelUtils;
 import utility.Log;
 import utility.PDFCreator;
-import utility.TestRail;
 
 public class WebCommands extends Config{
 	
