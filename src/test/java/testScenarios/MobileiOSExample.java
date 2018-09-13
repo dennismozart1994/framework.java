@@ -21,7 +21,7 @@ private AppiumDriver<MobileElement> driver = null;
 	{
 		MobileCommands.createEvidence(MobileTestExample.class.getName(), "Test ios", "ios opened", "iOS");
 		
-		this.driver = MobileCommands.LaunchLocalApp("iPhone 8", "/Users/dennismozart/Desktop/UICatalog.app");
+		this.driver = MobileCommands.LaunchAndInstallApp("iPhone 8", "/Users/dennismozart/Desktop/UICatalog.app");
 	}
 	
 	@After

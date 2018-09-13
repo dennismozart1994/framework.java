@@ -55,7 +55,7 @@ public class MobileCommands extends Config{
 	
 	/************************ LAUNCH APPS METHODS **********************************/
 	// Browser App Launch
-		public static AppiumDriver<MobileElement> LaunchLocalApp(String DeviceName, CharSequence Browser) throws DocumentException, IOException
+		public static AppiumDriver<MobileElement> LaunchBrowserApp(String DeviceName, CharSequence Browser) throws DocumentException, IOException
 		{
 			DesiredCapabilities cap = new DesiredCapabilities();
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
@@ -76,8 +76,8 @@ public class MobileCommands extends Config{
 				cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 				cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
 				cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
-				// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
-				// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
+				cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
+				cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 				driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 			}
 			
@@ -90,7 +90,7 @@ public class MobileCommands extends Config{
 		}
 	
 	// Install and Launch app
-	public static AppiumDriver<MobileElement> LaunchLocalApp(String DeviceName, String App) throws MalformedURLException, DocumentException, IOException
+	public static AppiumDriver<MobileElement> LaunchAndInstallApp(String DeviceName, String App) throws MalformedURLException, DocumentException, IOException
 	{
 		DesiredCapabilities cap = new DesiredCapabilities();
 		
@@ -116,8 +116,8 @@ public class MobileCommands extends Config{
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
 			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
-			// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
-			// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
+			cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
+			cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 			cap.setCapability(MobileCapabilityType.APP, App);
 			driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 		}
@@ -130,35 +130,20 @@ public class MobileCommands extends Config{
 	}
 	
 	
-	// Launch local app
-	public static AppiumDriver<MobileElement> LaunchLocalApp(String DeviceName, String PackageName, String ActivityorBundleID) throws MalformedURLException, DocumentException, IOException
+	// Launch local Android app
+	public static AppiumDriver<MobileElement> LaunchAndroidLocalApp(String DeviceName, String PackageName, String Activity) throws MalformedURLException, DocumentException, IOException
 	{
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
 		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 1000);
+		cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
+		cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+		cap.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PackageName);
+		cap.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, Activity);
+		cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
+		cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
 		
-		if(DeviceName.startsWith("Android"))
-		{
-			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
-			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-			cap.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PackageName);
-			cap.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ActivityorBundleID);
-			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
-			cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
-			
-			driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
-		}
-		else
-		{
-			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
-			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
-			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
-			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
-			// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
-			// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
-			cap.setCapability(IOSMobileCapabilityType.BUNDLE_ID, ActivityorBundleID);
-			driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
-		}
+		driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		addStep("Open App: ");
@@ -166,6 +151,28 @@ public class MobileCommands extends Config{
 		
 		return driver;
 	}
+	
+	// Launch local Android app
+		public static AppiumDriver<MobileElement> LaunchIOSLocalApp(String DeviceName, String BundleID) throws MalformedURLException, DocumentException, IOException
+		{
+			DesiredCapabilities cap = new DesiredCapabilities();
+			cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
+			cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 1000);
+			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
+			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
+			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
+			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
+			cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
+			cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
+			cap.setCapability(IOSMobileCapabilityType.BUNDLE_ID, BundleID);
+			driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
+
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			addStep("Open App: ");
+			TakeScreenshot();
+			
+			return driver;
+		}
 	
 	/************************ FIND ELEMENTS METHODS **********************************/
 	@SuppressWarnings("rawtypes")
