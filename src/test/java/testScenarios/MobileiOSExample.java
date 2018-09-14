@@ -21,7 +21,11 @@ private AppiumDriver<MobileElement> driver = null;
 	{
 		MobileCommands.createEvidence(MobileTestExample.class.getName(), "Test ios", "ios opened", "iOS");
 		
+<<<<<<< HEAD
 		this.driver = MobileCommands.LaunchLocalApp("iPad 2", "landscape", "com.precisionplanting.fieldview-develop");
+=======
+		this.driver = MobileCommands.LaunchAndInstallApp("iPhone 8", "/Users/dennismozart/Desktop/UICatalog.app");
+>>>>>>> a2cfdc04b7eb64489b10285a25935f0d9d997c93
 	}
 	
 	@After

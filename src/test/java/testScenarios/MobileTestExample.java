@@ -23,7 +23,7 @@ public class MobileTestExample{
 	{
 		MobileCommands.createEvidence(MobileTestExample.class.getName(), "Test ios", "ios opened", "iOS");
 		
-		this.driver = MobileCommands.LaunchLocalApp("Android", "ApiDemos-debug.apk");
+		this.driver = MobileCommands.LaunchAndInstallApp("Android", "ApiDemos-debug.apk");
 	}
 	
 	@After
