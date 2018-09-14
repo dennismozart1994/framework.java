@@ -76,8 +76,8 @@ public class MobileCommands extends Config{
 				cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 				cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
 				cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
-				// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
-				// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
+				cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
+				cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 				driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 			}
 			
@@ -116,8 +116,8 @@ public class MobileCommands extends Config{
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
 			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
-			// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
-			// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
+			cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
+			cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 			cap.setCapability(MobileCapabilityType.APP, App);
 			driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 		}
@@ -131,7 +131,7 @@ public class MobileCommands extends Config{
 	
 	
 	// Launch local app
-	public static AppiumDriver<MobileElement> LaunchLocalApp(String DeviceName, String PackageName, String ActivityorBundleID) throws MalformedURLException, DocumentException, IOException
+	public static AppiumDriver<MobileElement> LaunchLocalApp(String DeviceName, String PackageNameOrOrientation, String ActivityorBundleID) throws MalformedURLException, DocumentException, IOException
 	{
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
@@ -141,7 +141,7 @@ public class MobileCommands extends Config{
 		{
 			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-			cap.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PackageName);
+			cap.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PackageNameOrOrientation);
 			cap.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ActivityorBundleID);
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
 			cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
@@ -154,8 +154,9 @@ public class MobileCommands extends Config{
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
 			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
-			// cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.mozart@live.com");
-			// cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
+			cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
+			cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
+			cap.setCapability(MobileCapabilityType.ORIENTATION, PackageNameOrOrientation);
 			cap.setCapability(IOSMobileCapabilityType.BUNDLE_ID, ActivityorBundleID);
 			driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 		}

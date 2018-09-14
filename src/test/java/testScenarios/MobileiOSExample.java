@@ -21,7 +21,7 @@ private AppiumDriver<MobileElement> driver = null;
 	{
 		MobileCommands.createEvidence(MobileTestExample.class.getName(), "Test ios", "ios opened", "iOS");
 		
-		this.driver = MobileCommands.LaunchLocalApp("iPhone 8", "/Users/dennismozart/Desktop/UICatalog.app");
+		this.driver = MobileCommands.LaunchLocalApp("iPad 2", "landscape", "com.precisionplanting.fieldview-develop");
 	}
 	
 	@After
@@ -33,22 +33,6 @@ private AppiumDriver<MobileElement> driver = null;
 	@Test
 	public void Test()
 	{
-		MobileCommands.findByAcessibilityID("Alert Views").click();
-		MobileCommands.findByXpath("//*[@value='Text Entry']").click();
-		MobileCommands.findByClassName("XCUIElementTypeTextField").sendKeys("hello");
-		MobileCommands.findByName("OK").click();
-		MobileCommands.NavigateBack();
-		MobileCommands.ScrollUntil(true, MobileCommands.findByAcessibilityID("Steppers"));
-		MobileCommands.findByAcessibilityID("Steppers").click();
-		MobileCommands.findByAcessibilityID("Increment").click();
-		MobileCommands.findByAcessibilityID("Increment").click();
-		driver.findElementsByXPath("//XCUIElementTypeButton[@name=\"Increment\"]").get(0).click();
-		driver.findElementsByXPath("//XCUIElementTypeButton[@name=\"Increment\"]").get(0).click();
-		driver.findElementsByClassName("XCUIElementTypeStaticText").get(0).getText();
-		MobileCommands.NavigateBack();
-		MobileCommands.findByAcessibilityID("Picker View").click();
-		MobileCommands.setWhellValue(MobileCommands.findByAcessibilityID("Green color component value"), "255");
-		MobileCommands.setWhellValue(MobileCommands.findByAcessibilityID("Red color component value"), "55");
-		MobileCommands.setWhellValue(MobileCommands.findByAcessibilityID("Blue color component value"), "130");
+		
 	}
 }
