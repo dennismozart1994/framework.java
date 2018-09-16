@@ -175,6 +175,7 @@ public class PDFCreator {
 		StepName.setFont(FontFactory.getFont(FontFactory.HELVETICA_BOLD, 17f));
 		document.add(StepName);
 		addMobileScreenshot(Config.readConfig("Device"), screenshot);
+	}
 	
 	public static void addJSON(String JSON) throws DocumentException
 	{
