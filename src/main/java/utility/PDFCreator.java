@@ -169,6 +169,13 @@ public class PDFCreator {
 		document.add(StepName);
 	}
 	
+	public static void addStepWithScreenshot(String Step, BufferedImage screenshot) throws DocumentException, IOException, InterruptedException
+	{
+		Paragraph StepName = new Paragraph(Step);
+		StepName.setFont(FontFactory.getFont(FontFactory.HELVETICA_BOLD, 17f));
+		document.add(StepName);
+		addMobileScreenshot(Config.readConfig("Device"), screenshot);
+	
 	public static void addJSON(String JSON) throws DocumentException
 	{
 		Font oStyle = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.BLUE);
@@ -185,11 +192,15 @@ public class PDFCreator {
 		document.add(scr);
 	}
 	
-	public static void addMobileScreenshot(BufferedImage screenshot) throws DocumentException, IOException
+	public static void addMobileScreenshot(String Device, BufferedImage screenshot) throws DocumentException, IOException
 	{
 		PdfContentByte pdfCB = new PdfContentByte(writer);
 		Image scr = Image.getInstance(pdfCB, screenshot, 1);
-		scr.scaleToFit(200.f, 400.f);
+		if(Device.toLowerCase().contains("ipad") || Device.toLowerCase().contains("tablet"))
+			scr.scaleToFit(500.f, 700.f);
+		else
+			scr.scaleToFit(200.f, 400.f);
+		
 		document.add(scr);
 	}
 	

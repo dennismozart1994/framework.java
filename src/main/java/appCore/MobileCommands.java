@@ -55,17 +55,17 @@ public class MobileCommands extends Config{
 	
 	/************************ LAUNCH APPS METHODS **********************************/
 	// Browser App Launch
-		public static AppiumDriver<MobileElement> LaunchBrowserApp(String DeviceName, CharSequence Browser) throws DocumentException, IOException
+		public static AppiumDriver<MobileElement> LaunchBrowserApp(CharSequence Browser) throws DocumentException, IOException
 		{
 			DesiredCapabilities cap = new DesiredCapabilities();
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-			cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
-			cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 1000);
+			cap.setCapability(MobileCapabilityType.DEVICE_NAME, Config.readConfig("Device"));
+			cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 10000);
 			cap.setCapability(MobileCapabilityType.BROWSER_NAME, Browser);
 			
-			if(DeviceName.startsWith("Android"))
+			if(Config.readConfig("Device").toLowerCase().startsWith("android"))
 			{
-				cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
+				cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(Config.readConfig("Device")));
 				cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
 				cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
 				driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
@@ -90,19 +90,19 @@ public class MobileCommands extends Config{
 		}
 	
 	// Install and Launch app
-	public static AppiumDriver<MobileElement> LaunchAndInstallApp(String DeviceName, String App) throws MalformedURLException, DocumentException, IOException
+	public static AppiumDriver<MobileElement> LaunchAndInstallApp(String App) throws MalformedURLException, DocumentException, IOException
 	{
 		DesiredCapabilities cap = new DesiredCapabilities();
 		
-		cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
-		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 1000);
+		cap.setCapability(MobileCapabilityType.DEVICE_NAME, Config.readConfig("Device"));
+		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 10000);
 		
-		if(DeviceName.startsWith("Android"))
+		if(Config.readConfig("Device").toLowerCase().startsWith("android"))
 		{
 			File f = new File("apps");
 			File fs = new File(f, App);
 			
-			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
+			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(Config.readConfig("Device")));
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
 			cap.setCapability(MobileCapabilityType.APP, fs.getAbsolutePath());
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
@@ -128,55 +128,23 @@ public class MobileCommands extends Config{
 		
 		return driver;
 	}
-	
-	
-<<<<<<< HEAD
-	// Launch local app
-	public static AppiumDriver<MobileElement> LaunchLocalApp(String DeviceName, String PackageNameOrOrientation, String ActivityorBundleID) throws MalformedURLException, DocumentException, IOException
-=======
+
 	// Launch local Android app
-	public static AppiumDriver<MobileElement> LaunchAndroidLocalApp(String DeviceName, String PackageName, String Activity) throws MalformedURLException, DocumentException, IOException
->>>>>>> a2cfdc04b7eb64489b10285a25935f0d9d997c93
+	public static AppiumDriver<MobileElement> LaunchAndroidLocalApp(String PackageName, String Activity) throws MalformedURLException, DocumentException, IOException
 	{
 		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
-		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 1000);
-		cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
+		cap.setCapability(MobileCapabilityType.DEVICE_NAME, Config.readConfig("Device"));
+		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 10000);
+		cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(Config.readConfig("Device")));
 		cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
 		cap.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PackageName);
 		cap.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, Activity);
 		cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
 		cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
 		
-<<<<<<< HEAD
-		if(DeviceName.startsWith("Android"))
-		{
-			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(DeviceName));
-			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-			cap.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PackageNameOrOrientation);
-			cap.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ActivityorBundleID);
-			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
-			cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
-			
-			driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
-		}
-		else
-		{
-			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
-			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
-			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
-			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
-			cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
-			cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
-			cap.setCapability(MobileCapabilityType.ORIENTATION, PackageNameOrOrientation);
-			cap.setCapability(IOSMobileCapabilityType.BUNDLE_ID, ActivityorBundleID);
-			driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
-		}
-=======
 		driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
->>>>>>> a2cfdc04b7eb64489b10285a25935f0d9d997c93
-
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
 		addStep("Open App: ");
 		TakeScreenshot();
 		
@@ -184,11 +152,11 @@ public class MobileCommands extends Config{
 	}
 	
 	// Launch local Android app
-		public static AppiumDriver<MobileElement> LaunchIOSLocalApp(String DeviceName, String BundleID) throws MalformedURLException, DocumentException, IOException
+		public static AppiumDriver<MobileElement> LaunchIOSLocalApp(String BundleID) throws MalformedURLException, DocumentException, IOException
 		{
 			DesiredCapabilities cap = new DesiredCapabilities();
-			cap.setCapability(MobileCapabilityType.DEVICE_NAME, DeviceName);
-			cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 1000);
+			cap.setCapability(MobileCapabilityType.DEVICE_NAME, Config.readConfig("Device"));
+			cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 10000);
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
@@ -196,6 +164,7 @@ public class MobileCommands extends Config{
 			cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
 			cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 			cap.setCapability(IOSMobileCapabilityType.BUNDLE_ID, BundleID);
+			cap.setCapability(IOSMobileCapabilityType.SIMPLE_ISVISIBLE_CHECK, true);
 			driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -266,11 +235,19 @@ public class MobileCommands extends Config{
 				withFlag(KeyEventFlag.SOFT_KEYBOARD).
 				withFlag(KeyEventFlag.EDITOR_ACTION));
 	}
+	
 	// Navigate back
 	public static void NavigateBack()
 	{
 		driver.navigate().back();
 	}
+	
+	// Hide Keyboard
+	public static void HideKeyboard()
+	{
+		driver.hideKeyboard();
+	}
+	
 	// simple tap, click on element
 	public static void Tap(MobileElement element)
 	{
@@ -374,12 +351,10 @@ public class MobileCommands extends Config{
 	}
 	
 	// Default Scroll
-	@SuppressWarnings("unchecked")
 	public static void ScrollUntil(boolean down, MobileElement element)
 	{
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		@SuppressWarnings("rawtypes")
-		HashMap scrollObject = new HashMap<>();
+		HashMap<String, String> scrollObject = new HashMap<String, String>();
 		scrollObject.put("scrollObject", ((RemoteWebElement) element).getId());
 		if(down)
 		{
@@ -391,6 +366,14 @@ public class MobileCommands extends Config{
 		}
 		
 		js.executeScript("mobile: scroll", scrollObject);
+	}
+	 
+	public static void scrollUntilElementShowUp(MobileElement element){
+		String elementID = element.getId();
+		HashMap<String, String> scrollObject = new HashMap<String, String>();
+		scrollObject.put("element", elementID);
+		scrollObject.put("toVisible", "not an empty string");
+		driver.executeScript("mobile:scroll", scrollObject);
 	}
 	
 	/************************ HYBRID APPS COMMANDS **********************************/
@@ -478,12 +461,20 @@ public class MobileCommands extends Config{
 		PDFCreator.addStep(Step);
 	}
 	
+	// Add Step into Evidence
+	public static void addStepWithScreenshot(String Step) throws DocumentException, IOException, InterruptedException
+	{
+		File scr = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		BufferedImage screenshot = ImageIO.read(scr);
+		PDFCreator.addStepWithScreenshot(Step, screenshot);
+	}
+	
 	// Takes Screenshot and Add into PDF Evidence
 	public static void TakeScreenshot() throws IOException, DocumentException
 	{
 		File scr = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 		BufferedImage screenshot = ImageIO.read(scr);
-		PDFCreator.addMobileScreenshot(screenshot);
+		PDFCreator.addMobileScreenshot(Config.readConfig("Device"), screenshot);
 	}
 	
 	// Close PDF Evidence
