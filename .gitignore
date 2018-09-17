@@ -1,9 +1,2 @@
 /target/
 *.pdf
-src/test/java/testScenarios/MobileiOSExample.java
-src/main/java/pageObjects/CabApp/Maps.java
-src/main/java/pageObjects/CabApp/HomeScreen.java
-src/main/java/pageObjects/CabApp/Equipments.java
-src/test/java/testScenarios/MobileiOSExample.java
-src/main/java/pageObjects/CabApp/Settings.java
-src/main/java/pageObjects/CabApp/Fields.java
