@@ -23,7 +23,7 @@ Follow the steps bellow to setup the project into your machine.
 3 - Create a folder called "Evidences" into the project root
 4 - Wait until the dependencies being downloaded and the project finish building and your good to go.
 ```
-The evidence folder will be the one that will receive all pdf files containing the test evidence.
+The evidence folder will be the one that will hold all .pdf evidences.
 
 ## Functionalities
 
@@ -118,7 +118,7 @@ WaitUntilElementShowsUp(By field) - Wait until Web Element shows up with an 30 s
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Dennis Mozart** - *QA Analyst and Automator* - [dennismozart1994](https://github.com/dennismozart1994)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
@@ -127,7 +127,6 @@ See also the list of [contributors](https://github.com/your/project/contributors
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
-
 * Hat tip to anyone whose code was used
 * Inspiration
 * etc
