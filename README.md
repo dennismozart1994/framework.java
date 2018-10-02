@@ -40,11 +40,14 @@ FIREFOX - Launch the Firefox Browser
 NONE - Launch the IE Browser
 ```
 
-### Click(WebElement);
-Click on the Web Element provided into the parameter.
+### Click(parameters);
+Click on the Web Element provided based on the parameters bellow:
 
-### Click(String);
-Click on the link that contains the text provided into the parameter.
+```
+Click(WebElement) - Click at the WebElement provided;
+Click(String) - Click on the link that contains the text provided into the parameter.
+
+```
 
 ### Click(String);
 Click on the link that contains the text provided into the parameter.
@@ -55,7 +58,7 @@ Fill a Web Element form field
 ### Marklement(WebElement);
 Check a radio or checkbox value based on a Web Element.
 
-### ComboSelect()
+### ComboSelect(parameters);
 Select a combobox value, theres variations of that command available:
 
 ```
@@ -63,8 +66,6 @@ ComboSelect(WebElement fiel, Text) - Select based on the visible text for the us
 ComboSelect(WebElement, Integer) - Select based on the index of the value to select at the combo.
 
 ```
-
-
 
 ## Authors
 
