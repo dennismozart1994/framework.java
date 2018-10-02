@@ -6,7 +6,7 @@ That's a JAVA automation framework that contaisn the common functionalities that
 
 
 
-### Prerequisites
+### Pre-requisites
 
 * Have Java installed and the variable paths configured properly.
 * Have Appium server installed and configured to use Mobile automation.
