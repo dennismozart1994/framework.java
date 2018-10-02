@@ -8,11 +8,11 @@ That's a JAVA automation framework that contaisn the common functionalities that
 
 ### Prerequisites
 
-Have Java installed and the variable paths configured properly.
-Have Appium server installed and configured to use Mobile automation.
-Have Android Studio installed and configured to use Android Mobile Automation.
-Have the last Version of Xcode and Xcode Command line tools installed to use iOS Automation.
-Have configure the .properties file to use the proper image and header colour during the evidence generation.
+* Have Java installed and the variable paths configured properly.
+* Have Appium server installed and configured to use Mobile automation.
+* Have Android Studio installed and configured to use Android Mobile Automation.
+* Have the last Version of Xcode and Xcode Command line tools installed to use iOS Automation.
+* Have configure the .properties file to use the proper image and header colour during the evidence generation.
 
 ### Installing
 
