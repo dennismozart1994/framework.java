@@ -1,4 +1,4 @@
-# WEB AUTOMATION FRAMEWORK WITH SELENIUM
+# Web automation framework with selenium documentation
 
 ## Getting Started
 
