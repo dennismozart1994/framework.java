@@ -1,4 +1,4 @@
-# REST API FRAMEWORK DOCUMENTATION
+# Rest API automation framework documentation
 
 That's a JAVA automation framework that contaisn the common functionalities that an automator would use.
 
