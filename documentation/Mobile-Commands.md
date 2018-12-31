@@ -1,3 +1,5 @@
+# Mobile Automation Framework with Appium documentation
+
 ### Prerequisites
 
 * Have Java installed and the variable paths configured properly.
@@ -86,7 +88,7 @@ setWhellValue(MobileElement element, String value)
 
 * **Dennis Mozart** - *QA Analyst and Automator* - [dennismozart1994](https://github.com/dennismozart1994)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also an test [example](https://github.com/dennismozart1994/framework.java/blob/master/src/test/java/testScenarios/MobileiOSExample.java) in this project to get the hang of how wor with it.
 
 ## License
 
