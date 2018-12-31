@@ -1,6 +1,4 @@
-# A Functional multi-task automation Framework
-
-That's a JAVA automation framework that contaisn the common functionalities that an automator would use.
+# WEB AUTOMATION FRAMEWORK WITH SELENIUM
 
 ## Getting Started
 
@@ -115,7 +113,7 @@ WaitUntilElementShowsUp(By field) - Wait until Web Element shows up with an 30 s
 
 * **Dennis Mozart** - *QA Analyst and Automator* - [dennismozart1994](https://github.com/dennismozart1994)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also an test [example](https://github.com/dennismozart1994/framework.java/blob/master/src/test/java/testScenarios/TestWebExample.java) in this project to get the hang of how wor with it.
 
 ## License
 
