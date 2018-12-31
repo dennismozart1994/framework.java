@@ -1,4 +1,4 @@
-# A Functional multi-task automation Framework
+# REST API FRAMEWORK DOCUMENTATION
 
 That's a JAVA automation framework that contaisn the common functionalities that an automator would use.
 
