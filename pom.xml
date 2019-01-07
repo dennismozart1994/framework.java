@@ -5,7 +5,19 @@
   <groupId>SempreIT</groupId>
   <artifactId>framework.java</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <packaging>jar</packaging>
 
   <name>framework.java</name>
   <url>http://maven.apache.org</url>
@@ -31,15 +43,15 @@
 	    <version>6.14.3</version>
 	    <scope>test</scope>
 	</dependency>
-	
-	<!-- https://mvnrepository.com/artifact/io.appium/java-client -->
-	<dependency>
-	    <groupId>io.appium</groupId>
-	    <artifactId>java-client</artifactId>
-	    <version>6.1.0</version>
-	</dependency>
-	
-	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+
+	  <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
+	  <dependency>
+		  <groupId>io.appium</groupId>
+		  <artifactId>java-client</artifactId>
+		  <version>7.0.0</version>
+	  </dependency>
+
+	  <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 	<dependency>
 	    <groupId>org.apache.commons</groupId>
 	    <artifactId>commons-lang3</artifactId>

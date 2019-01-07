@@ -38,6 +38,7 @@ import io.appium.java_client.android.nativekey.PressesKey;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.AutomationName;
+import io.appium.java_client.remote.HideKeyboardStrategy;
 import io.appium.java_client.remote.IOSMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.remote.MobilePlatform;
@@ -62,10 +63,10 @@ public class MobileCommands extends Config{
 			cap.setCapability(MobileCapabilityType.DEVICE_NAME, Config.readConfig("Device"));
 			cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 10000);
 			cap.setCapability(MobileCapabilityType.BROWSER_NAME, Browser);
+			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(Config.readConfig("Device")));
 			
 			if(Config.readConfig("Device").toLowerCase().startsWith("android"))
 			{
-				cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(Config.readConfig("Device")));
 				cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
 				cap.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
 				driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
@@ -75,14 +76,12 @@ public class MobileCommands extends Config{
 				cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
 				cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 				cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
-				cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
 				cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
 				cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 				driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 			}
 			
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-			
 			addStep("Open App: ");
 			TakeScreenshot();
 			
@@ -96,13 +95,13 @@ public class MobileCommands extends Config{
 		
 		cap.setCapability(MobileCapabilityType.DEVICE_NAME, Config.readConfig("Device"));
 		cap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 10000);
+		cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(Config.readConfig("Device")));
 		
 		if(Config.readConfig("Device").toLowerCase().startsWith("android"))
 		{
 			File f = new File("apps");
 			File fs = new File(f, App);
 			
-			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(Config.readConfig("Device")));
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
 			cap.setCapability(MobileCapabilityType.APP, fs.getAbsolutePath());
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
@@ -115,7 +114,6 @@ public class MobileCommands extends Config{
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
-			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
 			cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
 			cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 			cap.setCapability(MobileCapabilityType.APP, App);
@@ -160,11 +158,12 @@ public class MobileCommands extends Config{
 			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
 			cap.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
 			cap.setCapability(IOSMobileCapabilityType.START_IWDP, true);
-			cap.setCapability(MobileCapabilityType.UDID, readConfig("UDID"));
+			cap.setCapability(MobileCapabilityType.UDID, getDeviceSerialNumber(Config.readConfig("Device")));
 			cap.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "dennis.silva@climate.com");
 			cap.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "iPhone Developer");
 			cap.setCapability(IOSMobileCapabilityType.BUNDLE_ID, BundleID);
 			cap.setCapability(IOSMobileCapabilityType.SIMPLE_ISVISIBLE_CHECK, true);
+			cap.setCapability("useJSONSource", true);
 			driver = new IOSDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -245,7 +244,7 @@ public class MobileCommands extends Config{
 	// Hide Keyboard
 	public static void HideKeyboard()
 	{
-		driver.hideKeyboard();
+		((IOSDriver)driver).hideKeyboard(HideKeyboardStrategy.TAP_OUTSIDE);
 	}
 	
 	// simple tap, click on element
@@ -418,7 +417,7 @@ public class MobileCommands extends Config{
 			
 			if (os.startsWith("Windows"))
 				scanner = new Scanner(Runtime.getRuntime().exec("cmd /c adb get-serialno").getInputStream());
-			else if (os.startsWith("Mac") && device.equalsIgnoreCase("android"))
+			else if (os.startsWith("Mac") && device.contains("android"))
 				scanner = new Scanner(Runtime.getRuntime().exec(new String[] {"/bin/bash", "-l", "-c", "adb get-serialno"}).getInputStream());
 			else 
 				scanner = new Scanner(Runtime.getRuntime().exec(new String[] {"/bin/bash", "-l", "-c", "idevice_id -l"}).getInputStream());

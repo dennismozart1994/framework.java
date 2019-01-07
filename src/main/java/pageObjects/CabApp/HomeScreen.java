@@ -2,6 +2,7 @@ package pageObjects.CabApp;
 
 import java.io.IOException;
 
+import io.appium.java_client.pagefactory.*;
 import org.openqa.selenium.support.PageFactory;
 
 import com.itextpdf.text.DocumentException;
@@ -9,32 +10,38 @@ import com.itextpdf.text.DocumentException;
 import appCore.MobileCommands;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class HomeScreen extends MobileCommands{
-	@iOSFindBy(accessibility="homescreenMapButton")
+	@HowToUseLocators(iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(accessibility="homescreenMapButton")
 	private MobileElement MapButton;
-	
-	@iOSFindBy(accessibility="homescreenEquipmentButton")
+
+	@HowToUseLocators(iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(accessibility="homescreenEquipmentButton")
 	private MobileElement EquipmentButton;
-	
-	@iOSFindBy(accessibility="homescreenFieldsButton")
+
+	@HowToUseLocators(iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(accessibility="homescreenFieldsButton")
 	private MobileElement FieldsButton;
-	
-	@iOSFindBy(accessibility="homescreenSettingsButton")
+
+	@HowToUseLocators(iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(accessibility="homescreenSettingsButton")
 	private MobileElement SettingsButton;
-	
-	@iOSFindBy(accessibility="homescreenHelpButton")
+
+	@HowToUseLocators(iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(accessibility="homescreenHelpButton")
 	private MobileElement HelpButton;
-	
-	@iOSFindBy(accessibility="homescreenOverviewButton")
+
+	@HowToUseLocators(iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(accessibility="homescreenOverviewButton")
 	private MobileElement OverviewButton;
-	
-	@iOSFindBy(accessibility="cloudSyncButton")
+
+	@HowToUseLocators(iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(accessibility="cloudSyncButton")
 	private MobileElement cloudSyncButton;
-	
-	@iOSFindBy(accessibility="dataManagerIconUnselected")
+
+	@HowToUseLocators(iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(accessibility="dataManagerIconUnselected")
 	private MobileElement WorkingOnIcon;
 	
 	public HomeScreen(AppiumDriver<MobileElement> driver)

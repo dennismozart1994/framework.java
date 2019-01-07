@@ -53,7 +53,20 @@ public class Constants {
 	public static final Integer TEST_ID = 1;
 	public static final Integer CASE_ID = 2;
 	
-	
 	/***************************** LOGGER **************************************/
 	public static final Logger logger = LogManager.getLogger(Logger.class);
+	
+	/***************************** Applications info **************************/
+	/***************************** iOS bundle ID's ****************************/
+	public static final String CAB_APP_DEV = "com.precisionplanting.fieldview-develop";
+	public static final String CAB_APP_PROD = "still.need.to.figureit.out";
+	public static final String CAB_APP_QA = "com.precisionplanting.fieldview-develop";
+
+	public static final String CFV_PROD_RELEASE = "com.climate.enterprise.iphone.CGPProd";	
+	public static final String CFV_QA_RELEASE = "com.climate.enterprise.iphone.CGPQA";
+	public static final String CFV_STAGING_RELEASE = "com.climate.enterprise.iphone.CGPStaging";
+
+	public static final String CFV_PROD_DEV = "com.climate.develop.iphone.CGPProd";	
+	public static final String CFV_QA_DEV = "com.climate.develop.iphone.CGPQA";
+	public static final String CFV_STAGING_DEV = "com.climate.develop.iphone.CGPStaging";
 }

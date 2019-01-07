@@ -14,6 +14,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import pageObjects.CabApp.HomeScreen;
 import pageObjects.CabApp.Maps;
+import utility.Constants;
 
 public class MobileiOSExample {
 private AppiumDriver<MobileElement> driver = null;
@@ -21,14 +22,14 @@ private AppiumDriver<MobileElement> driver = null;
 	@Before
 	public void begin() throws MalformedURLException, DocumentException, IOException
 	{
-		MobileCommands.createEvidence(MobileTestExample.class.getName(), "Test ios", "ios opened", "iOS");
-		this.driver = MobileCommands.LaunchIOSLocalApp("com.precisionplanting.fieldview-develop");
+		MobileCommands.createEvidence(MobileiOSExample.class.getName(), "Test ios", "ios opened", "iOS");
+		this.driver = MobileCommands.LaunchIOSLocalApp(Constants.CAB_APP_DEV);
 	}
 	
 	@After
 	public void tearDown()
 	{
-		MobileCommands.FinishEvidence(MobileTestExample.class.getName());
+		MobileCommands.FinishEvidence(MobileiOSExample.class.getName());
 	}
 	
 	@Test
@@ -36,7 +37,7 @@ private AppiumDriver<MobileElement> driver = null;
 	{
 		HomeScreen home = new HomeScreen(driver);
 		Maps mapScreen = home.TapOnMap();
-		mapScreen.selectField("Planting test");
+		mapScreen.selectField("09");
 		mapScreen.selectCrop("2019 Soja");
 		mapScreen.selectMapType(1, "Velocidade da Plantadeira");
 	}
