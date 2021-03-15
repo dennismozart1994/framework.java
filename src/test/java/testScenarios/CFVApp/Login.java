@@ -35,6 +35,6 @@ public class Login {
 	public void Test() throws Exception
 	{
 		LoginPage l = new LoginPage(driver);
-		l.Login("brazil-plus1@climate.com", "test12345");
+		l.Login("USERNAME_HERE", "PWD HERE");
 	}
 }
